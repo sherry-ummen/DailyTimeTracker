@@ -26,7 +26,7 @@ namespace DailyTimeTracker {
         private void MainWindow_Loaded(object sender, RoutedEventArgs e) {
             IdleTimeNotifier.StartNotifier(5);
             IdleTimeNotifier.Idle += () => Dispatcher.BeginInvoke(new Action(() => {
-                Box.Text += "Idle now ";
+                //Box.Text += "Idle now ";
             }));
         }
     }

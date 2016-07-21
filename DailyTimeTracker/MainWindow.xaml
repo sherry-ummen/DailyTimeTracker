@@ -4,9 +4,35 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DailyTimeTracker"
+        xmlns:hamburgerMenu="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
-        <TextBox Name="Box">Something</TextBox>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <hamburgerMenu:HamburgerMenu Background="Red" MenuIconColor="White" SelectionIndicatorColor="White" MenuItemForeground="White" HorizontalAlignment="Left">
+            <hamburgerMenu:HamburgerMenuItem Text="Home" SelectionCommand="{Binding ElementName=this_}"/>
+            <hamburgerMenu:HamburgerMenuItem Text="Search"/>
+            <hamburgerMenu:HamburgerMenuItem Text="Likes"/>
+            <hamburgerMenu:HamburgerMenuItem Text="Lists"/>
+            <hamburgerMenu:HamburgerMenuItem Text="Profile"/>
+        </hamburgerMenu:HamburgerMenu>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" Background="Coral"></StackPanel>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel Background="Brown"></StackPanel>
+                <StackPanel Grid.Column="1" Background="BlueViolet"></StackPanel>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
