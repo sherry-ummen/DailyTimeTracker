@@ -76,6 +76,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusinessLogic\Native\Win32.cs" />
+    <Compile Include="Models\Activity.cs" />
+    <Compile Include="Models\ActivityCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
