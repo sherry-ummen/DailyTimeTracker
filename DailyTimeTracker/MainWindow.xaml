@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DailyTimeTracker"
         xmlns:hamburgerMenu="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
+        xmlns:listViewLayout="clr-namespace:Itenso.Windows.Controls.ListViewLayout;assembly=Itenso.Windows.Controls.ListViewLayout"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="550" Width="825" DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
+    <Window.Resources>
+       
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -24,7 +28,74 @@
                 <RowDefinition Height="2*"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Background="Coral"></StackPanel>
+            <Grid Grid.Row="0" Background="Coral">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30" MaxHeight="30"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <!--<ListBox Grid.Row="1" ItemsSource="{Binding Path=Activities, Mode=OneWay}" HorizontalContentAlignment="Stretch">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="{x:Type ListBoxItem}" >
+                            <Border CornerRadius="10" BorderBrush="Black" BorderThickness="1" Margin="1">
+                                <Grid HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition MaxWidth="200"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Label Margin="10,0,20,0" Content="{Binding Category.Category}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Description}" TextWrapping="Wrap" />
+                                    <Label Grid.Column="2" Content="{Binding StartTime}" />
+                                    <Label Grid.Column="3" Content="{Binding EndTime}" />
+                                    --><!--<Label Content="{Binding Quantity}" />--><!--
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>-->
+                <ListView Grid.Row="1" Margin="2" Name="events" BorderThickness="4" 
+                  IsSynchronizedWithCurrentItem="true" ItemsSource="{Binding Path=Activities}" Grid.RowSpan="1" HorizontalAlignment="Stretch" listViewLayout:ListViewLayoutManager.Enabled="true">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=Day}" 
+                          Header="Day"
+                          Width="Auto"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=StartTime}" 
+                          Header="Start"
+                          Width="Auto"/>
+                            <GridViewColumn DisplayMemberBinding="{Binding Path=EndTime}" 
+                          Header="End"
+                          Width="Auto"/>
+                            <GridViewColumn listViewLayout:RangeColumn.MinWidth="100" listViewLayout:RangeColumn.MaxWidth="150" DisplayMemberBinding="{Binding Path=Duration}" 
+                          Header="Duration"
+                          Width="Auto"/>
+                            <GridViewColumn  listViewLayout:RangeColumn.MinWidth="100" listViewLayout:RangeColumn.MaxWidth="150" DisplayMemberBinding="{Binding Path=Category.Category}" 
+                          Header="Category"
+                          Width="Auto"/>
+                            <GridViewColumn listViewLayout:ProportionalColumn.Width="12" Header="Description" Width="300">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="100">
+                                            <TextBlock Text="{Binding Path=Description}"  TextWrapping="Wrap"/>
+                                        </ScrollViewer>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                            <GridViewColumn listViewLayout:ProportionalColumn.Width="1">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                       <StackPanel Orientation="Horizontal">
+                                            <Button Content="Delete" Margin="0" VerticalAlignment="Center"/>
+                                            <Button Content="Edit" Margin="0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                    </ListView>
+            </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"></ColumnDefinition>
