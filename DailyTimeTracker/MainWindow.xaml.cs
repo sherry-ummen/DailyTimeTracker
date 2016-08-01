@@ -12,12 +12,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DailyTimeTracker.BusinessLogic;
+using MahApps.Metro.Controls;
 
 namespace DailyTimeTracker {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window {
+    public partial class MainWindow : MetroWindow {
         public MainWindow() {
             InitializeComponent();
             Loaded += MainWindow_Loaded;

@@ -1,4 +1,4 @@
-﻿<Window x:Class="DailyTimeTracker.MainWindow"
+﻿<controls:MetroWindow x:Class="DailyTimeTracker.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,6 +7,7 @@
         xmlns:hamburgerMenu="clr-namespace:HamburgerMenu;assembly=HamburgerMenu"
         xmlns:listViewLayout="clr-namespace:Itenso.Windows.Controls.ListViewLayout;assembly=Itenso.Windows.Controls.ListViewLayout"
         xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
         Title="MainWindow" Height="550" Width="825" DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <Window.Resources>
@@ -17,7 +18,7 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <hamburgerMenu:HamburgerMenu Background="Red" MenuIconColor="White" SelectionIndicatorColor="White" MenuItemForeground="White" HorizontalAlignment="Left">
+        <hamburgerMenu:HamburgerMenu Background="Transparent" SelectionIndicatorColor="White" MenuItemForeground="White" HorizontalAlignment="Left">
             <hamburgerMenu:HamburgerMenuItem Text="Home" SelectionCommand="{Binding ElementName=this_}"/>
             <hamburgerMenu:HamburgerMenuItem Text="Reports"/>
             <hamburgerMenu:HamburgerMenuItem Text="Settings"/>
@@ -27,12 +28,12 @@
                 <RowDefinition Height="2*"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="0" Background="Coral">
+            <Grid Grid.Row="0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" MaxHeight="30"></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
-                <ListView Grid.Row="1" Margin="2" Name="events" BorderThickness="4" 
+                <ListView Grid.Row="1" Margin="2" Name="events" BorderThickness="1" BorderBrush="{StaticResource GrayBrush1}"
                   IsSynchronizedWithCurrentItem="true" ItemsSource="{Binding Path=Activities}" Grid.RowSpan="1" HorizontalAlignment="Stretch" listViewLayout:ListViewLayoutManager.Enabled="true">
                     <ListView.View>
                         <GridView>
@@ -79,9 +80,9 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                     <!--<ColumnDefinition></ColumnDefinition>-->
                 </Grid.ColumnDefinitions>
-                    <wpf:CartesianChart Margin="10,10,10,10">
+                    <wpf:CartesianChart Margin="2,2,2,2">
                         <wpf:CartesianChart.Series>
-                            <wpf:LineSeries Values="{Binding Values}" PointGeometrySize="18" StrokeThickness="4" />
+                            <wpf:LineSeries Values="{Binding Values}" PointGeometrySize="18" StrokeThickness="2" />
                         </wpf:CartesianChart.Series>
                         <wpf:CartesianChart.AxisX>
                             <wpf:Axis 
@@ -114,4 +115,4 @@
             </Grid>
         </Grid>
     </Grid>
-</Window>
+</controls:MetroWindow>
