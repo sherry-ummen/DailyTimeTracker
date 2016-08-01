@@ -19,10 +19,8 @@
         </Grid.ColumnDefinitions>
         <hamburgerMenu:HamburgerMenu Background="Red" MenuIconColor="White" SelectionIndicatorColor="White" MenuItemForeground="White" HorizontalAlignment="Left">
             <hamburgerMenu:HamburgerMenuItem Text="Home" SelectionCommand="{Binding ElementName=this_}"/>
-            <hamburgerMenu:HamburgerMenuItem Text="Search"/>
-            <hamburgerMenu:HamburgerMenuItem Text="Likes"/>
-            <hamburgerMenu:HamburgerMenuItem Text="Lists"/>
-            <hamburgerMenu:HamburgerMenuItem Text="Profile"/>
+            <hamburgerMenu:HamburgerMenuItem Text="Reports"/>
+            <hamburgerMenu:HamburgerMenuItem Text="Settings"/>
         </hamburgerMenu:HamburgerMenu>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
@@ -78,8 +76,8 @@
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <!--<ColumnDefinition></ColumnDefinition>-->
                 </Grid.ColumnDefinitions>
                     <wpf:CartesianChart Margin="10,10,10,10">
                         <wpf:CartesianChart.Series>
@@ -105,7 +103,14 @@
                         </wpf:Axis>
                     </wpf:CartesianChart.AxisY>
                 </wpf:CartesianChart>
-                <StackPanel Grid.Column="1" Background="BlueViolet"></StackPanel>
+                <!--<StackPanel Grid.Column="1" Background="BlueViolet">
+                    <wpf:PieChart LegendLocation="Bottom" >
+                        <wpf:PieChart.Series>
+                            <wpf:PieSeries Title="Maria" DataLabels="True" PushOut="20" 
+                               LabelPoint="{Binding PointLabel}"/>
+                        </wpf:PieChart.Series>
+                    </wpf:PieChart>
+                </StackPanel>-->
             </Grid>
         </Grid>
     </Grid>
