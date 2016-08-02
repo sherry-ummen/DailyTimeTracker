@@ -45,11 +45,12 @@ namespace DailyTimeTracker.ViewModel
         public MainViewModel()
         {
             var category = new ActivityCategory() { Category = "Work", Id = 1 };
-            Activities = new ObservableCollection<Activity>(){
-                new Activity() {Category = category,Description = "Something aljdsfhkjlahds fkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsdjflsjdlfjslkdfjlskdflkjsdlkfjslkdfjlksdflksdfjasd", StartTime = DateTime.Now},
-                new Activity() {Category = category,Description = "Something", StartTime = DateTime.Now.AddDays(-2), EndTime = DateTime.Now.AddDays(-2).AddHours(8)},
-                new Activity() {Category = category,Description = "Something", StartTime = DateTime.Now.AddDays(-4), EndTime = DateTime.Now.AddDays(-4).AddHours(5)},
-                new Activity() {Category = category,Description = "Something", StartTime = DateTime.Now.AddDays(-5), EndTime = DateTime.Now.AddDays(-5).AddHours(2).AddMinutes(10)},
+            Activities = new ObservableCollection<Activity>()
+            {
+                //new Activity() {Category = category,Description = "Something aljdsfhkjlahds fkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsdjflsjdlfjslkdfjlskdflkjsdlkfjslkdfjlksdflksdfjasd", StartTime = DateTime.Now},
+                //new Activity() {Category = category,Description = "Something", StartTime = DateTime.Now.AddDays(-2), EndTime = DateTime.Now.AddDays(-2).AddHours(8)},
+                //new Activity() {Category = category,Description = "Something", StartTime = DateTime.Now.AddDays(-4), EndTime = DateTime.Now.AddDays(-4).AddHours(5)},
+                //new Activity() {Category = category,Description = "Something", StartTime = DateTime.Now.AddDays(-5), EndTime = DateTime.Now.AddDays(-5).AddHours(2).AddMinutes(10)},
             };
 
             var mapper = Mappers.Xy<Activity>()
@@ -59,7 +60,7 @@ namespace DailyTimeTracker.ViewModel
             //lets save the mapper globally.
             Charting.For<Activity>(mapper);
             AxisMin = 0;
-            AxisMax = Activities.Max(model => ((model.EndTime ?? DateTime.Now) - model.StartTime).Hours + 2);
+            AxisMax = Activities.Count == 0 ? 9 : Activities.Max(model => ((model.EndTime ?? DateTime.Now) - model.StartTime).Hours + 2);
 
             ////lets set how to display the X Labels
             DateTimeFormatter = DateTimeFormatterString;

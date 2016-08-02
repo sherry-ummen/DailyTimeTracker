@@ -18,10 +18,10 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <hamburgerMenu:HamburgerMenu Background="Transparent" SelectionIndicatorColor="White" MenuItemForeground="White" HorizontalAlignment="Left">
-            <hamburgerMenu:HamburgerMenuItem Text="Home" SelectionCommand="{Binding ElementName=this_}"/>
-            <hamburgerMenu:HamburgerMenuItem Text="Reports"/>
-            <hamburgerMenu:HamburgerMenuItem Text="Settings"/>
+        <hamburgerMenu:HamburgerMenu MaxWidth="200" Background="Transparent" SelectionIndicatorColor="White" MenuItemForeground="White" HorizontalAlignment="Left">
+            <hamburgerMenu:HamburgerMenuItem Text="Home" SelectionCommand="{Binding ElementName=this_}" Icon="Resources/home-button-for-interface.png"/>
+            <hamburgerMenu:HamburgerMenuItem Text="Reports" Icon="Resources/pie-chart-statistics.png"/>
+            <hamburgerMenu:HamburgerMenuItem Text="Settings" Icon="Resources/settings-work-tool.png"/>
         </hamburgerMenu:HamburgerMenu>
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
