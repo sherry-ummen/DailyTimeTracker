@@ -30,9 +30,19 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30" MaxHeight="30"></RowDefinition>
+                    <RowDefinition Height="50" MaxHeight="50"></RowDefinition>
                     <RowDefinition></RowDefinition>
                 </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                        <Label VerticalContentAlignment="Center">Week's total hours of work</Label>
+                        <Label FontSize="34" FontWeight="Bold">48</Label>
+                    </StackPanel>
+                </Grid>
                 <ListView Grid.Row="1" Margin="2" Name="events" BorderThickness="1" BorderBrush="{StaticResource GrayBrush1}"
                   IsSynchronizedWithCurrentItem="true" ItemsSource="{Binding Path=Activities}" Grid.RowSpan="1" HorizontalAlignment="Stretch" listViewLayout:ListViewLayoutManager.Enabled="true">
                     <ListView.View>
