@@ -75,8 +75,8 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
-                                            <Button Content="Delete" Margin="0" VerticalAlignment="Center"/>
-                                            <Button Content="Edit" Margin="0" VerticalAlignment="Center"/>
+                                            <Button Content="Delete" Margin="3,3,3,3" VerticalAlignment="Center"/>
+                                            <Button Content="Edit" Margin="3,3,3,3" VerticalAlignment="Center"/>
                                         </StackPanel>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
