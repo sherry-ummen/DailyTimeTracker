@@ -11,6 +11,7 @@
                       mc:Ignorable="d"
                       Title="MainWindow"
                       WindowState="Maximized"
+                      Background="{StaticResource GrayBrush10}"
                       Height="550"
                       Width="825"
                       DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
