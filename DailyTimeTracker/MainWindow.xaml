@@ -52,6 +52,14 @@
                         <ColumnDefinition Width="*"></ColumnDefinition>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
+                    <WrapPanel VerticalAlignment="Bottom">
+                        <Button Width="Auto" Height="24" Background="Green" Foreground="Black">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                <Image Source="Resources/plus.png"></Image>
+                                <TextBlock>Add</TextBlock>
+                            </StackPanel>
+                        </Button>
+                    </WrapPanel>
                     <StackPanel Grid.Column="1"
                                 Orientation="Horizontal">
                         <Label VerticalContentAlignment="Center">Week's total hours of work</Label>
