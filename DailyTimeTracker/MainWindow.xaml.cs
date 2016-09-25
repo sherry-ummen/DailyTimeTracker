@@ -12,7 +12,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DailyTimeTracker.BusinessLogic;
+using DailyTimeTracker.Views;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.SimpleChildWindow;
 
 namespace DailyTimeTracker {
     /// <summary>
@@ -29,6 +32,10 @@ namespace DailyTimeTracker {
             IdleTimeNotifier.Idle += () => Dispatcher.BeginInvoke(new Action(() => {
                 //Box.Text += "Idle now ";
             }));
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e){
+           
         }
     }
 }

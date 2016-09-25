@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Documents;
+using System.Windows.Input;
 using DailyTimeTracker.Models;
+using DailyTimeTracker.Services;
+using DailyTimeTracker.Views;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using LiveCharts;
 using LiveCharts.Configurations;
+using MahApps.Metro.SimpleChildWindow;
 
-namespace DailyTimeTracker.ViewModel
-{
-    public class MainViewModel : ViewModelBase
-    {
+namespace DailyTimeTracker.ViewModel {
+    public class MainViewModel : ViewModelBase {
+        private readonly IDialogService _dialogService;
         private double _axisMax;
         private double _axisMin;
 
@@ -27,23 +31,31 @@ namespace DailyTimeTracker.ViewModel
         public double AxisMax {
             get { return _axisMax; }
             set {
-                _axisMax = value;
-                RaisePropertyChanged();
+                Set(() => AxisMax, ref _axisMax, value);
             }
         }
         public double AxisMin {
             get { return _axisMin; }
             set {
-                _axisMin = value;
-                RaisePropertyChanged();
+                Set(() => AxisMin, ref _axisMin, value);
             }
         }
+
+        #region Commands
+
+        public ICommand AddActivityCommand => new RelayCommand(AddActivityCommandExecute);
+
+        private void AddActivityCommandExecute(){
+            _dialogService.ShowAddActivtyDialog();
+        }
+
+        #endregion Commands
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel()
-        {
+        public MainViewModel(IDialogService dialogService) {
+            _dialogService = dialogService;
             var category = new ActivityCategory() { Category = "Work", Id = 1 };
             Activities = new ObservableCollection<Activity>()
             {
@@ -73,8 +85,7 @@ namespace DailyTimeTracker.ViewModel
 
         }
 
-        private string DateTimeFormatterString(double value)
-        {
+        private string DateTimeFormatterString(double value) {
             return new DateTime((long)(value * TimeSpan.FromDays(1).Ticks)).ToString("dd-MMM-yy ddd");
         }
     }

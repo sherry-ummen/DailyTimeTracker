@@ -12,23 +12,21 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using DailyTimeTracker.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
-namespace DailyTimeTracker.ViewModel
-{
+namespace DailyTimeTracker.ViewModel {
     /// <summary>
     /// This class contains static references to all the view models in the
     /// application and provides an entry point for the bindings.
     /// </summary>
-    public class ViewModelLocator
-    {
+    public class ViewModelLocator {
         /// <summary>
         /// Initializes a new instance of the ViewModelLocator class.
         /// </summary>
-        public ViewModelLocator()
-        {
+        public ViewModelLocator() {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
             ////if (ViewModelBase.IsInDesignModeStatic)
@@ -41,20 +39,16 @@ namespace DailyTimeTracker.ViewModel
             ////    // Create run time view services and models
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
-
+            SimpleIoc.Default.Register<IDialogService, DialogService>();
             SimpleIoc.Default.Register<MainViewModel>();
+            SimpleIoc.Default.Register<AddActivityViewModel>();
         }
 
-        public MainViewModel Main
-        {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
-            }
-        }
-        
-        public static void Cleanup()
-        {
+        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+
+        public AddActivityViewModel AddActivityViewModel => ServiceLocator.Current.GetInstance<AddActivityViewModel>();
+
+        public static void Cleanup() {
             // TODO Clear the ViewModels
         }
     }

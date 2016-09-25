@@ -53,8 +53,13 @@
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <WrapPanel VerticalAlignment="Bottom">
-                        <Button Width="Auto" Height="24" Background="Green" Foreground="Black">
-                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <Button Width="Auto"
+                                Height="24"
+                                Background="Green"
+                                Foreground="Black"
+                                Command="{Binding AddActivityCommand}">
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center">
                                 <Image Source="Resources/plus.png"></Image>
                                 <TextBlock>Add</TextBlock>
                             </StackPanel>

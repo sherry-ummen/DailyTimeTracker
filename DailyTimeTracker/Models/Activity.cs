@@ -15,12 +15,8 @@ namespace DailyTimeTracker.Models
         public DateTime? EndTime { get; set; }
         public ActivityCategory Category { get; set; }
         public string Description { get; set; }
-        public string Day { get { return StartTime.ToShortDateString() + " " + StartTime.DayOfWeek.ToString(); } }
+        public string Day => StartTime.ToShortDateString() + " " + StartTime.DayOfWeek;
 
-        public string Duration {
-            get {
-                return EndTime == null ? "Still counting" : (EndTime.Value - StartTime).Humanize();
-            }
-        }
+        public string Duration => EndTime == null ? "Still counting" : (EndTime.Value - StartTime).Humanize();
     }
 }
