@@ -46,5 +46,17 @@ namespace DailyTimeTracker.DatabaseLayer {
                 return collection.Upsert(activity.Value) ? Result.Ok<bool>(true) : Result.Fail<bool>("Failed to insert activity " + activity);
             return Result.Fail<bool>(activity.Error);
         }
+
+        public Result<bool> UpdateActivity(Result<Activity> activity) {
+            Initialize();
+            var collection = _database.GetCollection<Activity>("Activities");
+            if (activity.IsSuccess) {
+                if (collection.Exists(x => x.Id == activity.Value.Id)) {
+                    var update = collection.Update(activity.Value);
+                    return update ? Result.Ok(update) : Result.Fail<bool>($"Failed to update {activity.Value}");
+                }
+            }
+            return Result.Fail<bool>(activity.Error);
+        }
     }
 }

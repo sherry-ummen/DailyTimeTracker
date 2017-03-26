@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using CSharpFunctionalExtensions;
 using DailyTimeTracker.DatabaseLayer;
 using DailyTimeTracker.Models;
 using DailyTimeTracker.Services;
@@ -9,6 +10,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LiveCharts;
 using LiveCharts.Configurations;
+using System.Collections.Specialized;
 
 namespace DailyTimeTracker.ViewModel {
     public class MainViewModel : ViewModelBase {
@@ -16,6 +18,7 @@ namespace DailyTimeTracker.ViewModel {
         private double _axisMax;
         private double _axisMin;
         private IDatabaseService _databaseService;
+        private Activity _lastActivity;
 
         public ObservableCollection<Activity> Activities {
             get;
@@ -43,9 +46,16 @@ namespace DailyTimeTracker.ViewModel {
 
         public ICommand AddActivityCommand => new RelayCommand(AddActivityCommandExecute);
 
-        private void AddActivityCommandExecute(){
+        private void AddActivityCommandExecute() {
             var activity = _dialogService.ShowAddActivtyDialog();
-            _databaseService.InsertActivity(activity);
+            if (_lastActivity != null) {
+                var lastActivity = Activities.FirstOrDefault(x => x == _lastActivity);
+                lastActivity.EndTime = DateTime.Now;
+                _databaseService.UpdateActivity(Result.Ok<Activity>(lastActivity));
+                _lastActivity = lastActivity;
+            }
+            if (activity.IsSuccess)
+            Activities.Add(activity.Value);
         }
 
         #endregion Commands
@@ -58,6 +68,8 @@ namespace DailyTimeTracker.ViewModel {
             _databaseService = databaseService;
             var activities = databaseService.GetActivities();
             Activities = new ObservableCollection<Activity>(activities.IsSuccess ? activities.Value : Enumerable.Empty<Activity>());
+            Activities.CollectionChanged += Activities_CollectionChanged;
+            _lastActivity = Activities.LastOrDefault();
             var mapper = Mappers.Xy<Activity>()
                .X(model => model.StartTime.Ticks / TimeSpan.FromDays(1).Ticks)   //use DateTime.Ticks as X
                .Y(model => ((model.EndTime ?? DateTime.Now) - model.StartTime).Hours);           //use the value property as Y
@@ -76,6 +88,18 @@ namespace DailyTimeTracker.ViewModel {
 
             AxisStep = 1;
 
+        }
+
+        private void Activities_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
+            switch (e.Action) {
+                case NotifyCollectionChangedAction.Add: {
+                        foreach (var activity in e.NewItems) {
+                            _databaseService.InsertActivity(Result.Ok((Activity)activity));
+                            
+                        }
+                        break;
+                    }
+            }
         }
 
         private string DateTimeFormatterString(double value) {

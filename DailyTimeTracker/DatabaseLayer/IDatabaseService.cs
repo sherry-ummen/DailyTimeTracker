@@ -7,6 +7,8 @@ namespace DailyTimeTracker.DatabaseLayer {
 
         Result<bool> InsertActivity(Result<Activity> activity);
 
+        Result<bool> UpdateActivity(Result<Activity> activity);
+
         Result<IEnumerable<Activity>> GetActivities();
 
         Result<IEnumerable<ActivityCategory>> GetCategories();
