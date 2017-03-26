@@ -56,15 +56,8 @@ namespace DailyTimeTracker.ViewModel {
         public MainViewModel(IDialogService dialogService, IDatabaseService databaseService) {
             _dialogService = dialogService;
             _databaseService = databaseService;
-            var category = new ActivityCategory() { Category = "Work", Id = 1 };
-            Activities = new ObservableCollection<Activity>()
-            {
-                new Activity() {Category = category,Description = "Something aljdsfhkjlahds fkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfkjhasdk jhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsjhakjsdhkfkgj lkjlksdjlkfjsldfjlksdjflksdlkfjslkdfjlksdjfklsjdklfjslkdfjlsdjflsjdlfjslkdfjlskdflkjsdlkfjslkdfjlksdflksdfjasd", StartTime = DateTime.Now},
-                new Activity() {Category = category,Description = "Something", StartTime = DateTime.Now.AddDays(-2), EndTime = DateTime.Now.AddDays(-2).AddHours(8)},
-                new Activity() {Category = category,Description = "Something", StartTime = DateTime.Now.AddDays(-4), EndTime = DateTime.Now.AddDays(-4).AddHours(5)},
-                new Activity() {Category = category,Description = "Something", StartTime = DateTime.Now.AddDays(-5), EndTime = DateTime.Now.AddDays(-5).AddHours(2).AddMinutes(10)},
-            };
-
+            var activities = databaseService.GetActivities();
+            Activities = new ObservableCollection<Activity>(activities.IsSuccess ? activities.Value : Enumerable.Empty<Activity>());
             var mapper = Mappers.Xy<Activity>()
                .X(model => model.StartTime.Ticks / TimeSpan.FromDays(1).Ticks)   //use DateTime.Ticks as X
                .Y(model => ((model.EndTime ?? DateTime.Now) - model.StartTime).Hours);           //use the value property as Y
