@@ -8,8 +8,7 @@
                       Width="350"
                       BorderBrush="AliceBlue"
                       ShowMaxRestoreButton="False"
-                      WindowStartupLocation="CenterOwner"
-                      DataContext="{Binding Source={StaticResource Locator}, Path=AddActivityViewModel}">
+                      WindowStartupLocation="CenterOwner">
     <StackPanel>
         <TextBlock TextAlignment="Center">Add Activity</TextBlock>
         <TextBlock  VerticalAlignment="Bottom">Category</TextBlock>

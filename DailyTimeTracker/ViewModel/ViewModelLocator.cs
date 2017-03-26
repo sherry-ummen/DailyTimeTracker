@@ -12,8 +12,8 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using DailyTimeTracker.DatabaseLayer;
 using DailyTimeTracker.Services;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Ioc;
 using Microsoft.Practices.ServiceLocation;
 
@@ -40,13 +40,14 @@ namespace DailyTimeTracker.ViewModel {
             ////    SimpleIoc.Default.Register<IDataService, DataService>();
             ////}
             SimpleIoc.Default.Register<IDialogService, DialogService>();
+            SimpleIoc.Default.Register<IDatabaseService, DatabaseService>();
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<AddActivityViewModel>();
         }
 
-        public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+        public static MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
 
-        public AddActivityViewModel AddActivityViewModel => ServiceLocator.Current.GetInstance<AddActivityViewModel>();
+        public static AddActivityViewModel AddActivityViewModel => ServiceLocator.Current.GetInstance<AddActivityViewModel>();
 
         public static void Cleanup() {
             // TODO Clear the ViewModels

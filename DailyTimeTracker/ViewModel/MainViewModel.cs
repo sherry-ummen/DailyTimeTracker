@@ -1,23 +1,21 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Documents;
 using System.Windows.Input;
+using DailyTimeTracker.DatabaseLayer;
 using DailyTimeTracker.Models;
 using DailyTimeTracker.Services;
-using DailyTimeTracker.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using LiveCharts;
 using LiveCharts.Configurations;
-using MahApps.Metro.SimpleChildWindow;
 
 namespace DailyTimeTracker.ViewModel {
     public class MainViewModel : ViewModelBase {
         private readonly IDialogService _dialogService;
         private double _axisMax;
         private double _axisMin;
+        private IDatabaseService _databaseService;
 
         public ObservableCollection<Activity> Activities {
             get;
@@ -46,7 +44,8 @@ namespace DailyTimeTracker.ViewModel {
         public ICommand AddActivityCommand => new RelayCommand(AddActivityCommandExecute);
 
         private void AddActivityCommandExecute(){
-            _dialogService.ShowAddActivtyDialog();
+            var activity = _dialogService.ShowAddActivtyDialog();
+            _databaseService.InsertActivity(activity);
         }
 
         #endregion Commands
@@ -54,8 +53,9 @@ namespace DailyTimeTracker.ViewModel {
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel(IDialogService dialogService) {
+        public MainViewModel(IDialogService dialogService, IDatabaseService databaseService) {
             _dialogService = dialogService;
+            _databaseService = databaseService;
             var category = new ActivityCategory() { Category = "Work", Id = 1 };
             Activities = new ObservableCollection<Activity>()
             {

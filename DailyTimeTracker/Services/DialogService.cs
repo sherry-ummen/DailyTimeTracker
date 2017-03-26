@@ -1,15 +1,17 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
+using CSharpFunctionalExtensions;
 using DailyTimeTracker.Models;
+using DailyTimeTracker.ViewModel;
 using DailyTimeTracker.Views;
-using LanguageExt;
 
-namespace DailyTimeTracker.Services{
+namespace DailyTimeTracker.Services {
     public class DialogService : IDialogService {
-        public Option<Activity> ShowAddActivtyDialog(){
+        public Result<Activity> ShowAddActivtyDialog(){
             var window = new AddActivity{Owner = Application.Current.MainWindow /*TODO: Find a way to pass in as parameter*/};
+            var activityViewModel = ViewModelLocator.AddActivityViewModel;
+            window.DataContext = activityViewModel;
             window.ShowDialog();
-            return Option<Activity>.None;
+            return activityViewModel.ReturnResult;
         }
     }
 }

@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using Humanizer;
 
-namespace DailyTimeTracker.Models
-{
+namespace DailyTimeTracker.Models {
     public class Activity : ObservableObject
     {
         public int Id { get; set; }
@@ -18,5 +13,7 @@ namespace DailyTimeTracker.Models
         public string Day => StartTime.ToShortDateString() + " " + StartTime.DayOfWeek;
 
         public string Duration => EndTime == null ? "Still counting" : (EndTime.Value - StartTime).Humanize();
+
+        public override string ToString() => $"ID:{Id}\nStart Time:{StartTime.ToShortTimeString()}\nEnd Time:{EndTime.Value.ToShortTimeString()}\nCategory:{Category}\nDescription:{Description}\nDay:{Day}\nDuration:{Duration}"; 
     }
 }

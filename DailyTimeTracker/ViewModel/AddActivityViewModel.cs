@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Input;
+using CSharpFunctionalExtensions;
+using DailyTimeTracker.DatabaseLayer;
 using DailyTimeTracker.Models;
 using DailyTimeTracker.Views;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Views;
-using LanguageExt;
 
 namespace DailyTimeTracker.ViewModel {
     public class AddActivityViewModel : ViewModelBase {
         private ActivityCategory _category;
         private string _description;
-        private List<ActivityCategory> _categories;
+        private IEnumerable<ActivityCategory> _categories;
 
         public Action OnExit;
 
@@ -26,7 +27,7 @@ namespace DailyTimeTracker.ViewModel {
             set { Set(() => Description, ref _description, value); }
         }
 
-        public List<ActivityCategory> Categories {
+        public IEnumerable<ActivityCategory> Categories {
             get { return _categories; }
             set { Set(() => Categories, ref _categories, value); }
         }
@@ -35,7 +36,7 @@ namespace DailyTimeTracker.ViewModel {
 
         public ICommand CancelCommand => new RelayCommand<IClosable>(CancelCommandExecute);
 
-        public Option<Activity> Result { get; private set; } = Option<Activity>.None;
+        public Result<Activity> ReturnResult { get; private set; } = Result.Fail<Activity>("Defualt result");
 
         private void CancelCommandExecute(IClosable closable) {
             closable.Close();
@@ -47,13 +48,12 @@ namespace DailyTimeTracker.ViewModel {
             result.StartTime = DateTime.Now;
             result.Category = Category;
             result.Description = Description;
-            Result = Option<Activity>.Some(result);
+            ReturnResult = Result.Ok<Activity>(result);
             closable.Close();
         }
 
-        public AddActivityViewModel() {
-            _categories = new List<ActivityCategory>();
-            _categories.AddRange(new[] { new ActivityCategory() { Category = "Work", Id = 1 }, new ActivityCategory() { Category = "Personal", Id = 2 } });
+        public AddActivityViewModel(IDatabaseService databaseService) {
+            _categories = databaseService.GetCategories().IsSuccess ? databaseService.GetCategories().Value : Enumerable.Empty<ActivityCategory>();
         }
 
     }

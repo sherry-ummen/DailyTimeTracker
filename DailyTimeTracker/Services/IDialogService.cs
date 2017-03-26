@@ -1,8 +1,8 @@
-﻿using DailyTimeTracker.Models;
-using LanguageExt;
+﻿using CSharpFunctionalExtensions;
+using DailyTimeTracker.Models;
 
 namespace DailyTimeTracker.Services {
     public interface IDialogService{
-        Option<Activity> ShowAddActivtyDialog();
+        Result<Activity> ShowAddActivtyDialog();
     }
 }

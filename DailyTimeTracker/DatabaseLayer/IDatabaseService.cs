@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using CSharpFunctionalExtensions;
 using DailyTimeTracker.Models;
 
 namespace DailyTimeTracker.DatabaseLayer {
-    interface IDatabaseService {
+    public interface IDatabaseService {
 
-        bool InsertActivity(Activity activity);
+        Result<bool> InsertActivity(Result<Activity> activity);
+
+        Result<IEnumerable<Activity>> GetActivities();
+
+        Result<IEnumerable<ActivityCategory>> GetCategories();
     }
+
 }
