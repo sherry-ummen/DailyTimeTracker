@@ -127,6 +127,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DatabaseLayer\DatabaseService.cs" />
+    <Compile Include="DatabaseLayer\IDatabaseService.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="ViewModel\AddActivityViewModel.cs" />
