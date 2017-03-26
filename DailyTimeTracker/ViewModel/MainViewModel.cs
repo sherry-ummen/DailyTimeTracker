@@ -20,9 +20,10 @@ namespace DailyTimeTracker.ViewModel {
         private IDatabaseService _databaseService;
         private Activity _lastActivity;
 
+        private ObservableCollection<Activity> _activities;
         public ObservableCollection<Activity> Activities {
-            get;
-            private set;
+            get { return _activities; }
+            set { Set(() => Activities, ref _activities, value); }
         }
 
         public ChartValues<Activity> Values { get; set; }
@@ -49,16 +50,22 @@ namespace DailyTimeTracker.ViewModel {
         private void AddActivityCommandExecute() {
             var activity = _dialogService.ShowAddActivtyDialog();
             if (_lastActivity != null) {
-                var lastActivity = Activities.FirstOrDefault(x => x == _lastActivity);
-                lastActivity.EndTime = DateTime.Now;
-                _databaseService.UpdateActivity(Result.Ok<Activity>(lastActivity));
-                _lastActivity = lastActivity;
+                _lastActivity.EndTime = DateTime.Now;
+                _databaseService.UpdateActivity(Result.Ok<Activity>(_lastActivity));
             }
             if (activity.IsSuccess)
-            Activities.Add(activity.Value);
+                Activities.Add(activity.Value);
+            UpdateList();
         }
 
         #endregion Commands
+
+        private void UpdateList() {
+            var activities = _databaseService.GetActivities();
+            Activities = new ObservableCollection<Activity>(activities.IsSuccess ? activities.Value : Enumerable.Empty<Activity>());
+            Activities.CollectionChanged += Activities_CollectionChanged;
+            _lastActivity = Activities.LastOrDefault();
+        }
 
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
@@ -66,10 +73,8 @@ namespace DailyTimeTracker.ViewModel {
         public MainViewModel(IDialogService dialogService, IDatabaseService databaseService) {
             _dialogService = dialogService;
             _databaseService = databaseService;
-            var activities = databaseService.GetActivities();
-            Activities = new ObservableCollection<Activity>(activities.IsSuccess ? activities.Value : Enumerable.Empty<Activity>());
-            Activities.CollectionChanged += Activities_CollectionChanged;
-            _lastActivity = Activities.LastOrDefault();
+            Activities = new ObservableCollection<Activity>();
+            UpdateList();
             var mapper = Mappers.Xy<Activity>()
                .X(model => model.StartTime.Ticks / TimeSpan.FromDays(1).Ticks)   //use DateTime.Ticks as X
                .Y(model => ((model.EndTime ?? DateTime.Now) - model.StartTime).Hours);           //use the value property as Y
@@ -95,7 +100,7 @@ namespace DailyTimeTracker.ViewModel {
                 case NotifyCollectionChangedAction.Add: {
                         foreach (var activity in e.NewItems) {
                             _databaseService.InsertActivity(Result.Ok((Activity)activity));
-                            
+
                         }
                         break;
                     }
