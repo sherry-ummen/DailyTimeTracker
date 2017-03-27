@@ -122,6 +122,8 @@
                                         <StackPanel Orientation="Horizontal">
                                             <Button Content="Delete"
                                                     Margin="3,3,3,3"
+                                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListView}}, Path=DataContext.DeleteActivityCommand}"
+                                                    CommandParameter="{Binding}"
                                                     VerticalAlignment="Center" />
                                             <Button Content="Edit"
                                                     Margin="3,3,3,3"

@@ -58,6 +58,14 @@ namespace DailyTimeTracker.ViewModel {
             UpdateList();
         }
 
+        public ICommand DeleteActivityCommand => new RelayCommand<Activity>((activity) => DeleteActivityCommandExecute(activity));
+
+        private void DeleteActivityCommandExecute(Activity activity) {
+            if (_dialogService.ShowConfirmation("Deletion Confirmation", "Are you sure you want to delete?"))
+                Activities.Remove(activity);
+
+        }
+
         #endregion Commands
 
         private void UpdateList() {
@@ -101,6 +109,15 @@ namespace DailyTimeTracker.ViewModel {
                         foreach (var activity in e.NewItems) {
                             _databaseService.InsertActivity(Result.Ok((Activity)activity));
 
+                        }
+                        break;
+                    }
+                case NotifyCollectionChangedAction.Remove: {
+                        foreach (var activity in e.OldItems) {
+                            var result = _databaseService.DeleteActivity(Maybe<Activity>.From(activity as Activity));
+                            if (result.IsFailure) {
+                                _dialogService.ShowErrorMessage("Failed to deleted activity!", result.Error);
+                            }
                         }
                         break;
                     }

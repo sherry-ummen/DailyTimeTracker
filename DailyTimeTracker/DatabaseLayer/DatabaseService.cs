@@ -59,5 +59,14 @@ namespace DailyTimeTracker.DatabaseLayer {
             }
             return Result.Fail<bool>(activity.Error);
         }
+
+        public Result<bool> DeleteActivity(Maybe<Activity> activity) {
+            Initialize();
+            var collection = _database.GetCollection<Activity>("Activities");
+            if (activity.HasValue)
+                return collection.Delete(x => x.Id == activity.Value.Id) > 0 ? Result.Ok(true) : Result.Fail<bool>("Could not find the activity");
+
+            return Result.Fail<bool>("Failed to delete");
+        }
     }
 }

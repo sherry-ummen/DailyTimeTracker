@@ -12,6 +12,8 @@ namespace DailyTimeTracker.DatabaseLayer {
         Result<IEnumerable<Activity>> GetActivities();
 
         Result<IEnumerable<ActivityCategory>> GetCategories();
+
+        Result<bool> DeleteActivity(Maybe<Activity> activity);
     }
 
 }
