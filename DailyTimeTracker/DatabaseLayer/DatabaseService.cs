@@ -16,6 +16,7 @@ namespace DailyTimeTracker.DatabaseLayer {
                 var dbPath = Path.Combine(dbdrive, "DailyTimeTracker.db");
                 _database = new LiteDatabase(dbPath);
                 StoreDefualtValues();
+                //TODO : Add database version
             }
 
         }

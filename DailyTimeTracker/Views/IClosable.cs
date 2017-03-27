@@ -1,5 +1,5 @@
 ﻿namespace DailyTimeTracker.Views {
-    interface IClosable{
+    public interface IClosable{
         void Close();
     }
 }
