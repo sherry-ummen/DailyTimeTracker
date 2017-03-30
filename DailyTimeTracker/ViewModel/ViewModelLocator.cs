@@ -12,6 +12,7 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using DailyTimeTracker.BusinessLogic;
 using DailyTimeTracker.DatabaseLayer;
 using DailyTimeTracker.Services;
 using GalaSoft.MvvmLight.Ioc;
@@ -41,6 +42,7 @@ namespace DailyTimeTracker.ViewModel {
             ////}
             SimpleIoc.Default.Register<IDialogService, DialogService>();
             SimpleIoc.Default.Register<IDatabaseService, DatabaseService>();
+            SimpleIoc.Default.Register<IIdleTimeNotifier, IdleTimeNotifier>();
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<AddActivityViewModel>();
         }

@@ -151,6 +151,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BusinessLogic\IIdleTimeNotifier.cs" />
     <Compile Include="Converter\InvertVisibilityConverter.cs" />
     <Compile Include="DatabaseLayer\DatabaseService.cs" />
     <Compile Include="DatabaseLayer\IDatabaseService.cs" />

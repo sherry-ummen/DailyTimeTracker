@@ -11,6 +11,8 @@ using GalaSoft.MvvmLight.Command;
 using LiveCharts;
 using LiveCharts.Configurations;
 using System.Collections.Specialized;
+using System.Windows;
+using DailyTimeTracker.BusinessLogic;
 
 namespace DailyTimeTracker.ViewModel {
     public class MainViewModel : ViewModelBase {
@@ -79,9 +81,12 @@ namespace DailyTimeTracker.ViewModel {
         /// <summary>
         /// Initializes a new instance of the MainViewModel class.
         /// </summary>
-        public MainViewModel(IDialogService dialogService, IDatabaseService databaseService) {
+        public MainViewModel(IDialogService dialogService, IDatabaseService databaseService, IIdleTimeNotifier idleTimeNotifier) {
             _dialogService = dialogService;
             _databaseService = databaseService;
+            idleTimeNotifier.StartNotifier(10); // Take this from configuration or settings
+            idleTimeNotifier.IdleTimeBegins += IdleTimeNotifierOnIdleTimeBegins;
+            idleTimeNotifier.IdleTimeEnds += IdleTimeNotifierOnIdleTimeEnds;
             Activities = new ObservableCollection<Activity>();
             UpdateList();
             var mapper = Mappers.Xy<Activity>()
@@ -102,6 +107,14 @@ namespace DailyTimeTracker.ViewModel {
 
             AxisStep = 1;
 
+        }
+
+        private void IdleTimeNotifierOnIdleTimeEnds() {
+            //MessageBox.Show("Ends");
+        }
+
+        private void IdleTimeNotifierOnIdleTimeBegins() {
+            //MessageBox.Show("Begins");
         }
 
         private void Activities_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {

@@ -1,38 +1,43 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using DailyTimeTracker.Native;
 
 namespace DailyTimeTracker.BusinessLogic {
-    public static class IdleTimeNotifier {
+    public class IdleTimeNotifier : IIdleTimeNotifier {
 
-        private static bool _isNotifierStarted;
-        private static CancellationTokenSource _cancellationTokenSource;
-        private static bool _isNotified;
+        private bool _isNotifierStarted;
+        private CancellationTokenSource _cancellationTokenSource;
+        private bool _isNotified;
 
-        public static event Action Idle;
-
-        public static void StartNotifier(int idleTime) {
+        public void StartNotifier(int idleTimeInSeconds) {
             if (_isNotifierStarted)
                 return;
             _isNotifierStarted = true;
             _cancellationTokenSource = new CancellationTokenSource();
             new TaskFactory().StartNew(() => {
                 while (!_cancellationTokenSource.IsCancellationRequested) {
-                    if (Win32.GetIdleTime() > idleTime) {
+                    var time = Win32.GetIdleTime();
+                    Debug.WriteLine(time);
+                    if (time > idleTimeInSeconds) {
                         if (!_isNotified) {
-                            Notify();
+                            Debug.WriteLine("Notified");
+                            IdleTimeBegins?.Invoke();
                             _isNotified = true;
                         }
                     } else {
+                        if (_isNotified && time == 0) {
+                            Debug.WriteLine("Active");
+                            IdleTimeEnds?.Invoke();
+                        }
                         _isNotified = false;
                     }
                 }
             });
         }
 
-        public static void Notify() {
-            Idle?.Invoke();
-        }
+        public event Action IdleTimeBegins;
+        public event Action IdleTimeEnds;
     }
 }
