@@ -12,6 +12,7 @@ using LiveCharts;
 using LiveCharts.Configurations;
 using System.Collections.Specialized;
 using System.Windows;
+using System.Windows.Threading;
 using DailyTimeTracker.BusinessLogic;
 
 namespace DailyTimeTracker.ViewModel {
@@ -51,15 +52,7 @@ namespace DailyTimeTracker.ViewModel {
 
         private void AddActivityCommandExecute() {
             var activity = _dialogService.ShowAddActivtyDialog();
-            if (_lastActivity != null) {
-                if (_lastActivity.EndTime == null) {
-                    _lastActivity.EndTime = DateTime.Now;
-                    _databaseService.UpdateActivity(Result.Ok<Activity>(_lastActivity));
-                }
-            }
-            if (activity.IsSuccess)
-                Activities.Insert(0, activity.Value);
-            UpdateList();
+            AddActivity(activity);
         }
 
         public ICommand DeleteActivityCommand => new RelayCommand<Activity>((activity) => DeleteActivityCommandExecute(activity));
@@ -70,6 +63,21 @@ namespace DailyTimeTracker.ViewModel {
         }
 
         #endregion Commands
+
+        private void AddActivity(Result<Activity> activity) {
+            if (activity.IsSuccess) {
+                if (_lastActivity != null) {
+                    if (_lastActivity.EndTime == null) {
+                        _lastActivity.EndTime = DateTime.Now;
+                        _databaseService.UpdateActivity(Result.Ok<Activity>(_lastActivity));
+                    }
+                }
+                Activities.Insert(0, activity.Value);
+                UpdateList();
+            } else {
+                _dialogService.ShowErrorMessage("Failure!", $"Failed to add the activity with error :\n{activity.Error}");
+            }
+        }
 
         private void UpdateList() {
             var activities = _databaseService.GetActivities();
@@ -109,12 +117,31 @@ namespace DailyTimeTracker.ViewModel {
 
         }
 
-        private void IdleTimeNotifierOnIdleTimeEnds() {
-            //MessageBox.Show("Ends");
+        private void IdleTimeNotifierOnIdleTimeBegins() {
+            var activity = new Activity() {
+                Category = _databaseService.GetCategories().Value.ToList().Where(x => x.Category == "Idle").First(),
+                Description = "Idle Time",
+                StartTime = DateTime.Now,
+            };
+
+            //TODO: Get rid of direct call to dispatcher. Wrap it.
+            Application.Current.Dispatcher.Invoke(new Action(() => {
+                AddActivity(Result.Ok(activity));
+            }));
         }
 
-        private void IdleTimeNotifierOnIdleTimeBegins() {
-            //MessageBox.Show("Begins");
+        private void IdleTimeNotifierOnIdleTimeEnds() {
+            // Ask user about what you were doing
+            // Do you want to continue previous task
+            // Do you want to start new task
+            var activity = new Activity() {
+                Category = _databaseService.GetCategories().Value.ToList().Where(x => x.Category == "Work").First(),
+                Description = "Started New",
+                StartTime = DateTime.Now,
+            };
+            Application.Current.Dispatcher.Invoke(new Action(() => {
+                AddActivity(Result.Ok(activity));
+            }));
         }
 
         private void Activities_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {

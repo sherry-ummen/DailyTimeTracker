@@ -26,6 +26,7 @@ namespace DailyTimeTracker.DatabaseLayer {
             categoryCollection.Upsert(new ActivityCategory() { Id = 1, Category = "Work" });
             categoryCollection.Upsert(new ActivityCategory() { Id = 2, Category = "Personal" });
             categoryCollection.Upsert(new ActivityCategory() { Id = 3, Category = "Lunch" });
+            categoryCollection.Upsert(new ActivityCategory() { Id = 4, Category = "Idle" });
         }
 
         public Result<IEnumerable<Activity>> GetActivities() {
