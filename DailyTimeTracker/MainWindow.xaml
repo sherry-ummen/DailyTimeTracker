@@ -15,9 +15,9 @@
                       Height="550"
                       Width="825"
                       DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
-    <Window.Resources>
-
-    </Window.Resources>
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Control" Key="N" Command="{Binding AddActivityCommand}"></KeyBinding>
+    </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
