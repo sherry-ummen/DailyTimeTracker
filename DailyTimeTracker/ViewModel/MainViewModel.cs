@@ -50,8 +50,10 @@ namespace DailyTimeTracker.ViewModel {
         private void AddActivityCommandExecute() {
             var activity = _dialogService.ShowAddActivtyDialog();
             if (_lastActivity != null) {
-                _lastActivity.EndTime = DateTime.Now;
-                _databaseService.UpdateActivity(Result.Ok<Activity>(_lastActivity));
+                if (_lastActivity.EndTime == null) {
+                    _lastActivity.EndTime = DateTime.Now;
+                    _databaseService.UpdateActivity(Result.Ok<Activity>(_lastActivity));
+                }
             }
             if (activity.IsSuccess)
                 Activities.Add(activity.Value);
@@ -63,7 +65,6 @@ namespace DailyTimeTracker.ViewModel {
         private void DeleteActivityCommandExecute(Activity activity) {
             if (_dialogService.ShowConfirmation("Deletion Confirmation", "Are you sure you want to delete?"))
                 Activities.Remove(activity);
-
         }
 
         #endregion Commands

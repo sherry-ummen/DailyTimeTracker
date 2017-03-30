@@ -17,6 +17,12 @@ namespace DailyTimeTracker.ViewModel {
 
         public Action OnExit;
 
+        public bool IsNewTask { get; set; } = true;
+
+        public DateTime StartTime { get; set; } = DateTime.Now;
+
+        public DateTime? EndTime { get; set; }
+
         public ActivityCategory Category {
             get { return _category; }
             set { Set(() => Category, ref _category, value); }
@@ -45,15 +51,23 @@ namespace DailyTimeTracker.ViewModel {
         private void OkCommandExecute(IClosable closable) {
             // Set the result
             var result = new Activity();
-            result.StartTime = DateTime.Now;
-            result.Category = Category;
-            result.Description = Description;
+            if (IsNewTask) {
+                result.StartTime = DateTime.Now;
+                result.Category = Category;
+                result.Description = Description;
+            } else {
+                result.StartTime = StartTime;
+                result.EndTime = EndTime;
+                result.Category = Category;
+                result.Description = Description;
+            }
             ReturnResult = Result.Ok<Activity>(result);
             closable.Close();
         }
 
         public AddActivityViewModel(IDatabaseService databaseService) {
             _categories = databaseService.GetCategories().IsSuccess ? databaseService.GetCategories().Value : Enumerable.Empty<ActivityCategory>();
+            Category = Categories.First();
         }
 
     }
