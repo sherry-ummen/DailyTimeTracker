@@ -17,6 +17,8 @@
                       DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
     <Window.InputBindings>
         <KeyBinding Modifiers="Control" Key="N" Command="{Binding AddActivityCommand}"></KeyBinding>
+        <KeyBinding Key="Delete" Command="{Binding DeleteActivityCommand}"
+                                                    CommandParameter="{Binding SelectedItem, ElementName=Activities}"></KeyBinding>
     </Window.InputBindings>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -74,7 +76,7 @@
                 </Grid>
                 <ListView Grid.Row="1"
                           Margin="2"
-                          Name="events"
+                          Name="Activities"
                           BorderThickness="1"
                           BorderBrush="{StaticResource GrayBrush1}"
                           IsSynchronizedWithCurrentItem="true"
