@@ -56,7 +56,7 @@ namespace DailyTimeTracker.ViewModel {
                 }
             }
             if (activity.IsSuccess)
-                Activities.Add(activity.Value);
+                Activities.Insert(0, activity.Value);
             UpdateList();
         }
 
@@ -71,9 +71,9 @@ namespace DailyTimeTracker.ViewModel {
 
         private void UpdateList() {
             var activities = _databaseService.GetActivities();
-            Activities = new ObservableCollection<Activity>(activities.IsSuccess ? activities.Value : Enumerable.Empty<Activity>());
+            Activities = new ObservableCollection<Activity>(activities.IsSuccess ? activities.Value.Reverse() : Enumerable.Empty<Activity>());
             Activities.CollectionChanged += Activities_CollectionChanged;
-            _lastActivity = Activities.LastOrDefault();
+            _lastActivity = Activities.FirstOrDefault();
         }
 
         /// <summary>
