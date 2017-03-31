@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="DailyTimeTracker.AddActivityControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:DailyTimeTracker"
+             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:converter="clr-namespace:DailyTimeTracker.Converter"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.InputBindings>
+        <KeyBinding Key="Escape"
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"></KeyBinding>
+    </UserControl.InputBindings>
+    <UserControl.Resources>
+        <converter:InvertVisibilityConverter x:Key="Converter" />
+    </UserControl.Resources>
+
+    <Border BorderThickness="2"
+            BorderBrush="Red">
+        <StackPanel>
+            <TextBlock TextAlignment="Center">Add Activity</TextBlock>
+            <CheckBox IsChecked="{Binding Path=IsNewTask}"
+                      Name="Taskcheck">New Task</CheckBox>
+            <StackPanel Visibility="{Binding ElementName=Taskcheck, Path=IsChecked, Converter={StaticResource Converter}}">
+                <Label>Start Time</Label>
+                <xctk:DateTimePicker Value="{Binding StartTime}"></xctk:DateTimePicker>
+                <Label>End Time</Label>
+                <xctk:DateTimePicker Value="{Binding EndTime}"></xctk:DateTimePicker>
+            </StackPanel>
+
+            <TextBlock  VerticalAlignment="Bottom">Category</TextBlock>
+            <ComboBox ItemsSource="{Binding Categories}"
+                      DisplayMemberPath="Category"
+                      IsSynchronizedWithCurrentItem="true"
+                      SelectedItem="{Binding Path=Category}"></ComboBox>
+            <TextBlock VerticalAlignment="Bottom">Description</TextBlock>
+            <TextBox Text="{Binding Path=Description}"
+                     AcceptsReturn="True"
+                     Height="100"></TextBox>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,5,0,0">
+                <Button Margin="0,0,10,0"
+                        MaxHeight="3"
+                        Command="{Binding OkCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">OK</Button>
+                <Button Height="3"
+                        Command="{Binding CancelCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">Cancel</Button>
+            </StackPanel>
+        </StackPanel>
+    </Border>
+</UserControl>

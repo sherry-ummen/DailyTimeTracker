@@ -151,6 +151,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddActivityControl.xaml.cs">
+      <DependentUpon>AddActivityControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="BusinessLogic\IIdleTimeNotifier.cs" />
     <Compile Include="Converter\InvertVisibilityConverter.cs" />
     <Compile Include="DatabaseLayer\DatabaseService.cs" />
@@ -163,7 +166,14 @@
     <Compile Include="Views\AddActivity.xaml.cs">
       <DependentUpon>AddActivity.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\AfterIdleQuery.xaml.cs">
+      <DependentUpon>AfterIdleQuery.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\IClosable.cs" />
+    <Page Include="AddActivityControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -186,6 +196,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\AddActivity.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AfterIdleQuery.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
