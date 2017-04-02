@@ -45,11 +45,14 @@ namespace DailyTimeTracker.ViewModel {
             SimpleIoc.Default.Register<IIdleTimeNotifier, IdleTimeNotifier>();
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<AddActivityViewModel>();
+            SimpleIoc.Default.Register<AfterIdleQueryViewModel>();
         }
 
         public static MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
 
         public static AddActivityViewModel AddActivityViewModel => ServiceLocator.Current.GetInstance<AddActivityViewModel>();
+
+        public static AfterIdleQueryViewModel AfterIdleQueryViewModel => ServiceLocator.Current.GetInstance<AfterIdleQueryViewModel>();
 
         public static void Cleanup() {
             // TODO Clear the ViewModels

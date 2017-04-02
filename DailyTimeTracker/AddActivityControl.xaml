@@ -9,11 +9,6 @@
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <UserControl.InputBindings>
-        <KeyBinding Key="Escape"
-                    Command="{Binding CancelCommand}"
-                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"></KeyBinding>
-    </UserControl.InputBindings>
     <StackPanel>
         <TextBlock  VerticalAlignment="Bottom">Category</TextBlock>
         <ComboBox ItemsSource="{Binding Categories}"

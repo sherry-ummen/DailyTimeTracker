@@ -15,8 +15,6 @@ namespace DailyTimeTracker.ViewModel {
         private string _description;
         private IEnumerable<ActivityCategory> _categories;
 
-        public Action OnExit;
-
         public bool IsNewTask { get; set; } = true;
 
         public DateTime StartTime { get; set; } = DateTime.Now;

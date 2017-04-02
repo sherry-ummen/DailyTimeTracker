@@ -12,6 +12,11 @@
                       BorderBrush="AliceBlue"
                       ShowMaxRestoreButton="False"
                       WindowStartupLocation="CenterOwner">
+    <Window.InputBindings>
+        <KeyBinding Key="Escape"
+                    Command="{Binding CancelCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"></KeyBinding>
+    </Window.InputBindings>
     <Window.Resources>
         <converter:InvertVisibilityConverter x:Key="Converter" />
     </Window.Resources>

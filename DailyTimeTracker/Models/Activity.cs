@@ -12,7 +12,7 @@ namespace DailyTimeTracker.Models {
         public string Description { get; set; }
         public string Day => StartTime.ToShortDateString() + " " + StartTime.DayOfWeek;
 
-        public string Duration => EndTime == null ? "Still counting" : (EndTime.Value - StartTime).Humanize();
+        public string Duration => EndTime == null ? "Ongoing" : (EndTime.Value - StartTime).Humanize();
 
         public override string ToString() => $"ID:{Id}\nStart Time:{StartTime.ToShortTimeString()}\nEnd Time:{EndTime.Value.ToShortTimeString()}\nCategory:{Category}\nDescription:{Description}\nDay:{Day}\nDuration:{Duration}"; 
     }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-using DailyTimeTracker.BusinessLogic;
+﻿using System.Windows;
 using MahApps.Metro.Controls;
 
 namespace DailyTimeTracker {

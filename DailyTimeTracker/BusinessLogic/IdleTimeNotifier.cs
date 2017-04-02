@@ -19,16 +19,16 @@ namespace DailyTimeTracker.BusinessLogic {
             new TaskFactory().StartNew(() => {
                 while (!_cancellationTokenSource.IsCancellationRequested) {
                     var time = Win32.GetIdleTime();
-                    Debug.WriteLine(time);
+                    //Debug.WriteLine(time);
                     if (time > idleTimeInSeconds) {
                         if (!_isNotified) {
-                            Debug.WriteLine("Notified");
+                            //Debug.WriteLine("Notified");
                             IdleTimeBegins?.Invoke();
                             _isNotified = true;
                         }
                     } else {
                         if (_isNotified && time == 0) {
-                            Debug.WriteLine("Active");
+                            //Debug.WriteLine("Active");
                             IdleTimeEnds?.Invoke();
                         }
                         _isNotified = false;

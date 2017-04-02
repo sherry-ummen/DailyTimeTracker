@@ -9,12 +9,13 @@
                       xmlns:dailyTimeTracker="clr-namespace:DailyTimeTracker"
                       xmlns:converter="clr-namespace:DailyTimeTracker.Converter"
                       mc:Ignorable="d"
-                      Title="What do you want to do next?"
+                      Title="Idle Time"
                       SizeToContent="Height"
                       Width="350"
                       BorderBrush="AliceBlue"
                       ShowMaxRestoreButton="False"
-                      WindowStartupLocation="CenterOwner">
+                      WindowStartupLocation="CenterOwner"
+                      DataContext="{Binding Source={StaticResource Locator}, Path=AfterIdleQueryViewModel}">
     <Window.Resources>
         <converter:InvertVisibilityConverter x:Key="Converter" />
     </Window.Resources>
@@ -22,10 +23,10 @@
             BorderBrush="Red">
         <StackPanel>
             <Label>What were you dong while you were away?</Label>
-            <dailyTimeTracker:AddActivityControl></dailyTimeTracker:AddActivityControl>
-            <RadioButton Content="New Task" GroupName="ContinueActivity"></RadioButton>
-            <RadioButton IsChecked="True" Content="Continue with previous" GroupName="ContinueActivity" Name="Continue"></RadioButton>
-            <dailyTimeTracker:AddActivityControl Visibility="{Binding ElementName=Continue, Path=IsChecked, Converter={StaticResource Converter}}"></dailyTimeTracker:AddActivityControl>
+            <dailyTimeTracker:AddActivityControl DataContext="{Binding IdleActivity}"></dailyTimeTracker:AddActivityControl>
+            <RadioButton Content="New Task" IsChecked="{Binding IsNewTask}" GroupName="ContinueActivity"></RadioButton>
+            <RadioButton IsChecked="{Binding IsContinuation}" Content="Continue with previous" GroupName="ContinueActivity" Name="Continue"></RadioButton>
+            <dailyTimeTracker:AddActivityControl DataContext="{Binding NewActivity}" Visibility="{Binding ElementName=Continue, Path=IsChecked, Converter={StaticResource Converter}}"></dailyTimeTracker:AddActivityControl>
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         Margin="0,5,0,0">

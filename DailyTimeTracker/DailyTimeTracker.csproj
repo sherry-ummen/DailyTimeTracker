@@ -161,6 +161,7 @@
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\IDialogService.cs" />
     <Compile Include="ViewModel\AddActivityViewModel.cs" />
+    <Compile Include="ViewModel\AfterIdleQueryViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="Views\AddActivity.xaml.cs">

@@ -92,7 +92,7 @@ namespace DailyTimeTracker.ViewModel {
         public MainViewModel(IDialogService dialogService, IDatabaseService databaseService, IIdleTimeNotifier idleTimeNotifier) {
             _dialogService = dialogService;
             _databaseService = databaseService;
-            idleTimeNotifier.StartNotifier(10); // Take this from configuration or settings
+            idleTimeNotifier.StartNotifier(45); // Take this from configuration or settings
             idleTimeNotifier.IdleTimeBegins += IdleTimeNotifierOnIdleTimeBegins;
             idleTimeNotifier.IdleTimeEnds += IdleTimeNotifierOnIdleTimeEnds;
             Activities = new ObservableCollection<Activity>();
@@ -134,17 +134,40 @@ namespace DailyTimeTracker.ViewModel {
             // Ask user about what you were doing
             // Do you want to continue previous task
             // Do you want to start new task
-            var activity = new Activity() {
-                Category = _databaseService.GetCategories().Value.ToList().Where(x => x.Category == "Work").First(),
-                Description = "Started New",
-                StartTime = DateTime.Now,
-            };
+            Result<AfterIdleQueryViewModel> vm = Result.Fail<AfterIdleQueryViewModel>("Default Value");
+            Application.Current.Dispatcher.Invoke(() => {
+                vm = _dialogService.ShowAfterIdleQueryDialog();
+            });
+            if (vm.IsFailure) return;
+            AfterIdleQueryViewModel idleQuery = vm.Value;
+            _lastActivity.Category = idleQuery.IdleActivity.Category;
+            _lastActivity.Description = idleQuery.IdleActivity.Description;
+            Activity activity = null;
+            if (idleQuery.IsNewTask) {
+                activity = new Activity() {
+                    Category = idleQuery.NewActivity.Category,
+                    Description = idleQuery.NewActivity.Description,
+                    StartTime = DateTime.Now,
+                };
+            } else {
+                activity = Activities.Count > 1
+                    ? Activities.ElementAt(1)
+                    : new Activity() {
+                        Category = _databaseService.GetCategories().Value.First(x => x.Category == "Work"),
+                        Description = "Some work!",
+                        StartTime = DateTime.Now
+                    };
+                if (Activities.Count > 1) {
+                    activity.Id = 0;
+                    activity.EndTime = null;
+                }
+            }
             Application.Current.Dispatcher.Invoke(new Action(() => {
                 AddActivity(Result.Ok(activity));
             }));
         }
 
-        private void Activities_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) {
+        private void Activities_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {
             switch (e.Action) {
                 case NotifyCollectionChangedAction.Add: {
                         foreach (var activity in e.NewItems) {
@@ -156,6 +179,7 @@ namespace DailyTimeTracker.ViewModel {
                 case NotifyCollectionChangedAction.Remove: {
                         foreach (var activity in e.OldItems) {
                             var result = _databaseService.DeleteActivity(Maybe<Activity>.From(activity as Activity));
+                            if (result.IsSuccess) _lastActivity = Activities.FirstOrDefault();
                             if (result.IsFailure) {
                                 _dialogService.ShowErrorMessage("Failed to deleted activity!", result.Error);
                             }
