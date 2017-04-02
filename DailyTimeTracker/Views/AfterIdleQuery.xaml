@@ -6,6 +6,8 @@
                       xmlns:local="clr-namespace:DailyTimeTracker.Views"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
                       xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                      xmlns:dailyTimeTracker="clr-namespace:DailyTimeTracker"
+                      xmlns:converter="clr-namespace:DailyTimeTracker.Converter"
                       mc:Ignorable="d"
                       Title="What do you want to do next?"
                       SizeToContent="Height"
@@ -13,28 +15,17 @@
                       BorderBrush="AliceBlue"
                       ShowMaxRestoreButton="False"
                       WindowStartupLocation="CenterOwner">
+    <Window.Resources>
+        <converter:InvertVisibilityConverter x:Key="Converter" />
+    </Window.Resources>
     <Border BorderThickness="2"
             BorderBrush="Red">
         <StackPanel>
-            <TextBlock TextAlignment="Center">Add Activity</TextBlock>
-            <CheckBox IsChecked="{Binding Path=IsNewTask}"
-                      Name="Taskcheck">New Task</CheckBox>
-            <StackPanel Visibility="{Binding ElementName=Taskcheck, Path=IsChecked, Converter={StaticResource Converter}}">
-                <Label>Start Time</Label>
-                <xctk:DateTimePicker Value="{Binding StartTime}"></xctk:DateTimePicker>
-                <Label>End Time</Label>
-                <xctk:DateTimePicker Value="{Binding EndTime}"></xctk:DateTimePicker>
-            </StackPanel>
-
-            <TextBlock  VerticalAlignment="Bottom">Category</TextBlock>
-            <ComboBox ItemsSource="{Binding Categories}"
-                      DisplayMemberPath="Category"
-                      IsSynchronizedWithCurrentItem="true"
-                      SelectedItem="{Binding Path=Category}"></ComboBox>
-            <TextBlock VerticalAlignment="Bottom">Description</TextBlock>
-            <TextBox Text="{Binding Path=Description}"
-                     AcceptsReturn="True"
-                     Height="100"></TextBox>
+            <Label>What were you dong while you were away?</Label>
+            <dailyTimeTracker:AddActivityControl></dailyTimeTracker:AddActivityControl>
+            <RadioButton Content="New Task" GroupName="ContinueActivity"></RadioButton>
+            <RadioButton IsChecked="True" Content="Continue with previous" GroupName="ContinueActivity" Name="Continue"></RadioButton>
+            <dailyTimeTracker:AddActivityControl Visibility="{Binding ElementName=Continue, Path=IsChecked, Converter={StaticResource Converter}}"></dailyTimeTracker:AddActivityControl>
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         Margin="0,5,0,0">

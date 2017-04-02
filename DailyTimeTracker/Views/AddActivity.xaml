@@ -12,6 +12,34 @@
                       BorderBrush="AliceBlue"
                       ShowMaxRestoreButton="False"
                       WindowStartupLocation="CenterOwner">
-    <dailyTimeTracker:AddActivityControl></dailyTimeTracker:AddActivityControl>
+    <Window.Resources>
+        <converter:InvertVisibilityConverter x:Key="Converter" />
+    </Window.Resources>
+    <Border BorderThickness="2"
+            BorderBrush="Red">
+        <StackPanel>
+            <TextBlock TextAlignment="Center">Add Activity</TextBlock>
+            <CheckBox IsChecked="{Binding Path=IsNewTask}"
+                      Name="Taskcheck">New Task</CheckBox>
+            <StackPanel Visibility="{Binding ElementName=Taskcheck, Path=IsChecked, Converter={StaticResource Converter}}">
+                <Label>Start Time</Label>
+                <xctk:DateTimePicker Value="{Binding StartTime}"></xctk:DateTimePicker>
+                <Label>End Time</Label>
+                <xctk:DateTimePicker Value="{Binding EndTime}"></xctk:DateTimePicker>
+            </StackPanel>
+            <dailyTimeTracker:AddActivityControl></dailyTimeTracker:AddActivityControl>
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Center"
+                        Margin="0,5,0,0">
+                <Button Margin="0,0,10,0"
+                        MaxHeight="3"
+                        Command="{Binding OkCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">OK</Button>
+                <Button Height="3"
+                        Command="{Binding CancelCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}">Cancel</Button>
+            </StackPanel>
+        </StackPanel>
+    </Border>
 </controls:MetroWindow>
 
