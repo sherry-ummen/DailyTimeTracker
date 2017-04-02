@@ -14,34 +14,16 @@ namespace DailyTimeTracker.Native {
         [DllImport("Kernel32.dll")]
         private static extern uint GetLastError();
 
-        public static uint GetIdleTime() {
-            uint idleTime = 0;
-            LASTINPUTINFO lastInputInfo = new LASTINPUTINFO();
-            lastInputInfo.cbSize = (uint)Marshal.SizeOf(lastInputInfo);
-            lastInputInfo.dwTime = 0;
-
-            uint envTicks = (uint)Environment.TickCount;
-
-            if (GetLastInputInfo(ref lastInputInfo)) {
-                uint lastInputTick = lastInputInfo.dwTime;
-
-                idleTime = envTicks - lastInputTick;
-            }
-
-            return ((idleTime > 0) ? (idleTime / 1000) : 0);
-        }
-
-        public static long GetTickCount() {
-            return Environment.TickCount;
+        public static int GetIdleTime() {
+            return TimeSpan.FromMilliseconds(((uint)Environment.TickCount - GetLastInputTime())).Seconds;
         }
 
         public static long GetLastInputTime() {
             LASTINPUTINFO lastInPut = new LASTINPUTINFO();
-            lastInPut.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(lastInPut);
+            lastInPut.cbSize = (uint)Marshal.SizeOf(lastInPut);
             if (!GetLastInputInfo(ref lastInPut)) {
                 throw new Exception(GetLastError().ToString());
             }
-
             return lastInPut.dwTime;
         }
     }
