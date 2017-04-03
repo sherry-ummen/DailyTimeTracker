@@ -12,6 +12,7 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using System;
 using DailyTimeTracker.BusinessLogic;
 using DailyTimeTracker.DatabaseLayer;
 using DailyTimeTracker.Services;
@@ -52,7 +53,7 @@ namespace DailyTimeTracker.ViewModel {
 
         public static AddActivityViewModel AddActivityViewModel => ServiceLocator.Current.GetInstance<AddActivityViewModel>();
 
-        public static AfterIdleQueryViewModel AfterIdleQueryViewModel => ServiceLocator.Current.GetInstance<AfterIdleQueryViewModel>();
+        public static AfterIdleQueryViewModel AfterIdleQueryViewModel(TimeSpan timeSpan) => new AfterIdleQueryViewModel(ServiceLocator.Current.GetInstance<IDatabaseService>(), timeSpan);
 
         public static void Cleanup() {
             // TODO Clear the ViewModels

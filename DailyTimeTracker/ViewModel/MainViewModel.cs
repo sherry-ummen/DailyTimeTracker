@@ -136,7 +136,7 @@ namespace DailyTimeTracker.ViewModel {
             // Do you want to start new task
             Result<AfterIdleQueryViewModel> vm = Result.Fail<AfterIdleQueryViewModel>("Default Value");
             Application.Current.Dispatcher.Invoke(() => {
-                vm = _dialogService.ShowAfterIdleQueryDialog(); //TODO: timeTaken should be displayed as well
+                vm = _dialogService.ShowAfterIdleQueryDialog(timeTaken); //TODO: timeTaken should be displayed as well
             });
             if (vm.IsFailure) return;
             AfterIdleQueryViewModel idleQuery = vm.Value;

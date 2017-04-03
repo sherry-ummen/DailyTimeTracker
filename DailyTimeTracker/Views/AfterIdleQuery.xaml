@@ -11,25 +11,36 @@
                       mc:Ignorable="d"
                       Title="Idle Time"
                       SizeToContent="Height"
-                      Width="350"
+                      Width="500"
                       BorderBrush="AliceBlue"
                       ShowMaxRestoreButton="False"
-                      WindowStartupLocation="CenterOwner"
-                      DataContext="{Binding Source={StaticResource Locator}, Path=AfterIdleQueryViewModel}">
+                      WindowStartupLocation="CenterOwner">
     <Window.Resources>
         <converter:InvertVisibilityConverter x:Key="Converter" />
     </Window.Resources>
-    <Border BorderThickness="2"
+    <Border BorderThickness="5"
             BorderBrush="Red">
         <StackPanel>
-            <Label>What were you dong while you were away?</Label>
+            <Label FontWeight="Bold" FontSize="14">Welcome Back!</Label>
+            <StackPanel Orientation="Horizontal">
+                <Label>What were you dong while you were away?</Label>
+                <Label FontWeight="Bold"
+                       FontSize="12"
+                       Content="{Binding TotalTimeElapsed}"></Label>
+            </StackPanel>
             <dailyTimeTracker:AddActivityControl DataContext="{Binding IdleActivity}"></dailyTimeTracker:AddActivityControl>
-            <RadioButton Content="New Task" IsChecked="{Binding IsNewTask}" GroupName="ContinueActivity"></RadioButton>
-            <RadioButton IsChecked="{Binding IsContinuation}" Content="Continue with previous" GroupName="ContinueActivity" Name="Continue"></RadioButton>
-            <dailyTimeTracker:AddActivityControl DataContext="{Binding NewActivity}" Visibility="{Binding ElementName=Continue, Path=IsChecked, Converter={StaticResource Converter}}"></dailyTimeTracker:AddActivityControl>
+            <RadioButton Content="New Task"
+                         IsChecked="{Binding IsNewTask}"
+                         GroupName="ContinueActivity"></RadioButton>
+            <RadioButton IsChecked="{Binding IsContinuation}"
+                         Content="Continue with previous"
+                         GroupName="ContinueActivity"
+                         Name="Continue"></RadioButton>
+            <dailyTimeTracker:AddActivityControl DataContext="{Binding NewActivity}"
+                                                 Visibility="{Binding ElementName=Continue, Path=IsChecked, Converter={StaticResource Converter}}"></dailyTimeTracker:AddActivityControl>
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
-                        Margin="0,5,0,0">
+                        Margin="0,5,0,10">
                 <Button Margin="0,0,10,0"
                         MaxHeight="3"
                         Command="{Binding OkCommand}"

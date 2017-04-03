@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using CSharpFunctionalExtensions;
 using DailyTimeTracker.Models;
 using DailyTimeTracker.ViewModel;
@@ -14,9 +15,9 @@ namespace DailyTimeTracker.Services {
             return activityViewModel.ReturnResult;
         }
 
-        public Result<AfterIdleQueryViewModel> ShowAfterIdleQueryDialog() {
+        public Result<AfterIdleQueryViewModel> ShowAfterIdleQueryDialog(TimeSpan timeTaken) {
             var window = new AfterIdleQuery() { Owner = Application.Current.MainWindow };
-            var afterIdleQueryViewModel = ViewModelLocator.AfterIdleQueryViewModel;
+            var afterIdleQueryViewModel = ViewModelLocator.AfterIdleQueryViewModel(timeTaken);
             window.DataContext = afterIdleQueryViewModel;
             window.ShowDialog();
             return afterIdleQueryViewModel.ReturnResult;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using CSharpFunctionalExtensions;
@@ -11,16 +12,19 @@ using GalaSoft.MvvmLight.Command;
 namespace DailyTimeTracker.ViewModel {
     public class AfterIdleQueryViewModel : ViewModelBase {
         private readonly IDatabaseService _databaseService;
+        private readonly TimeSpan _timeTaken;
 
 
-
-        public AfterIdleQueryViewModel(IDatabaseService databaseService) {
+        public AfterIdleQueryViewModel(IDatabaseService databaseService, TimeSpan timeTaken) {
             _databaseService = databaseService;
+            _timeTaken = timeTaken;
             var categories = _databaseService.GetCategories().Value;
             var activityCategories = categories as IList<ActivityCategory> ?? categories.ToList();
             IdleActivity = new SimpleActivityViewModel(activityCategories, "Idle Time.");
             NewActivity = new SimpleActivityViewModel(new List<ActivityCategory>(activityCategories), "");
         }
+
+        public string TotalTimeElapsed => $"TimeElapsed: {_timeTaken:g}";
 
         public bool IsNewTask { get; set; } = false;
         public bool IsContinuation { get; set; } = true;
