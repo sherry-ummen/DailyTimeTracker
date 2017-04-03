@@ -92,7 +92,7 @@ namespace DailyTimeTracker.ViewModel {
         public MainViewModel(IDialogService dialogService, IDatabaseService databaseService, IIdleTimeNotifier idleTimeNotifier) {
             _dialogService = dialogService;
             _databaseService = databaseService;
-            idleTimeNotifier.StartNotifier(45); // Take this from configuration or settings
+            idleTimeNotifier.StartNotifier(30); // Take this from configuration or settings
             idleTimeNotifier.IdleTimeBegins += IdleTimeNotifierOnIdleTimeBegins;
             idleTimeNotifier.IdleTimeEnds += IdleTimeNotifierOnIdleTimeEnds;
             Activities = new ObservableCollection<Activity>();
@@ -130,13 +130,13 @@ namespace DailyTimeTracker.ViewModel {
             }));
         }
 
-        private void IdleTimeNotifierOnIdleTimeEnds() {
+        private void IdleTimeNotifierOnIdleTimeEnds(TimeSpan timeTaken) {
             // Ask user about what you were doing
             // Do you want to continue previous task
             // Do you want to start new task
             Result<AfterIdleQueryViewModel> vm = Result.Fail<AfterIdleQueryViewModel>("Default Value");
             Application.Current.Dispatcher.Invoke(() => {
-                vm = _dialogService.ShowAfterIdleQueryDialog();
+                vm = _dialogService.ShowAfterIdleQueryDialog(); //TODO: timeTaken should be displayed as well
             });
             if (vm.IsFailure) return;
             AfterIdleQueryViewModel idleQuery = vm.Value;

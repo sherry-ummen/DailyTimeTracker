@@ -6,6 +6,6 @@ namespace DailyTimeTracker.BusinessLogic {
 
         event Action IdleTimeBegins;
 
-        event Action IdleTimeEnds;
+        event Action<TimeSpan> IdleTimeEnds;
     }
 }

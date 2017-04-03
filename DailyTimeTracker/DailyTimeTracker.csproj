@@ -155,6 +155,9 @@
       <DependentUpon>AddActivityControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="BusinessLogic\IIdleTimeNotifier.cs" />
+    <Compile Include="BusinessLogic\Native\KeyboardInput.cs" />
+    <Compile Include="BusinessLogic\Native\MouseInput.cs" />
+    <Compile Include="BusinessLogic\Native\WindowsHookHelper.cs" />
     <Compile Include="Converter\InvertVisibilityConverter.cs" />
     <Compile Include="DatabaseLayer\DatabaseService.cs" />
     <Compile Include="DatabaseLayer\IDatabaseService.cs" />
