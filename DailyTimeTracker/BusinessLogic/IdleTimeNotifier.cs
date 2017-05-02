@@ -3,8 +3,10 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using DailyTimeTracker.BusinessLogic.Native;
 
-namespace DailyTimeTracker.BusinessLogic {
-    public class IdleTimeNotifier : IIdleTimeNotifier {
+namespace DailyTimeTracker.BusinessLogic
+{
+    public class IdleTimeNotifier : IIdleTimeNotifier
+    {
 
         private bool _isNotifierStarted;
         private MouseInput _mouse;
@@ -12,7 +14,7 @@ namespace DailyTimeTracker.BusinessLogic {
         private volatile bool _idleTime = false;
 
         public void StartNotifier(int idleTimeInSeconds) {
-            if (_isNotifierStarted)
+            if(_isNotifierStarted)
                 return;
             _isNotifierStarted = true;
 
@@ -26,16 +28,16 @@ namespace DailyTimeTracker.BusinessLogic {
 
         void CheckForIdleTime(int idleTimeInSeconds) {
             var task = Task.Run(() => {
-                while (true) {
-                    if ((DateTime.Now - StartTime).TotalSeconds > idleTimeInSeconds && !IsNotified && !_idleTime) {
+                while(true) {
+                    if((DateTime.Now - StartTime).TotalSeconds > idleTimeInSeconds && !IsNotified && !_idleTime) {
+                        Debug.WriteLine($"Idle time begins:{(DateTime.Now - StartTime).TotalSeconds}");
                         IdleTimeBegins?.Invoke();
                         _idleTime = true;
                         IsNotified = true;
-                        Debug.WriteLine($"Idle time begins:{(DateTime.Now - StartTime).TotalSeconds}");
                     } else {
-                        if (!_idleTime && IsNotified) {
-                            IdleTimeEnds?.Invoke(DateTime.Now.Subtract(StartTime));
+                        if(!_idleTime && IsNotified) {
                             Debug.WriteLine($"Idle time ends:{(DateTime.Now - StartTime).TotalSeconds}");
+                            IdleTimeEnds?.Invoke(DateTime.Now.Subtract(StartTime));
                             StartTime = DateTime.Now;
                             IsNotified = false;
                         }
@@ -53,6 +55,7 @@ namespace DailyTimeTracker.BusinessLogic {
         private DateTime StartTime { get; set; } = DateTime.Now;
 
         private void OnNonIdleState(object sender, EventArgs e) {
+            if(!IsNotified) StartTime = DateTime.Now;
             _idleTime = false;
         }
 
