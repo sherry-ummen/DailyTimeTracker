@@ -42,7 +42,6 @@ namespace DailyTimeTracker.BusinessLogic
                             IsNotified = false;
                         }
                     }
-                    Task.Delay(100);
                 }
             });
             task.ContinueWith((t) => {

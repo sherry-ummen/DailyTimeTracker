@@ -44,12 +44,15 @@ namespace DailyTimeTracker.ViewModel {
             SimpleIoc.Default.Register<IDialogService, DialogService>();
             SimpleIoc.Default.Register<IDatabaseService, DatabaseService>();
             SimpleIoc.Default.Register<IIdleTimeNotifier, IdleTimeNotifier>();
+            SimpleIoc.Default.Register<ShellViewModel>();
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<AddActivityViewModel>();
             SimpleIoc.Default.Register<AfterIdleQueryViewModel>();
         }
 
         public static MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
+
+        public static ShellViewModel Shell => ServiceLocator.Current.GetInstance<ShellViewModel>();
 
         public static AddActivityViewModel AddActivityViewModel => ServiceLocator.Current.GetInstance<AddActivityViewModel>();
 

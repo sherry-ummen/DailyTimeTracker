@@ -14,6 +14,6 @@ namespace DailyTimeTracker.Models {
 
         public string Duration => EndTime == null ? "Ongoing" : (EndTime.Value - StartTime).Humanize();
 
-        public override string ToString() => $"ID:{Id}\nStart Time:{StartTime.ToShortTimeString()}\nEnd Time:{EndTime.Value.ToShortTimeString()}\nCategory:{Category}\nDescription:{Description}\nDay:{Day}\nDuration:{Duration}"; 
+        public override string ToString() => $"ID:{Id}\nStart Time:{StartTime.ToShortTimeString()}\nEnd Time:{EndTime?.ToShortTimeString()}\nCategory:{Category}\nDescription:{Description}\nDay:{Day}\nDuration:{Duration}"; 
     }
 }

@@ -1,5 +1,9 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Navigation;
+using DailyTimeTracker.Views;
 using MahApps.Metro.Controls;
+using MenuItem = DailyTimeTracker.ViewModel.MenuItem;
 
 namespace DailyTimeTracker {
     /// <summary>
@@ -8,7 +12,14 @@ namespace DailyTimeTracker {
     public partial class MainWindow : MetroWindow {
         public MainWindow() {
             InitializeComponent();
-            Loaded += MainWindow_Loaded;
+            // Navigate to the home page.
+            Navigation.Navigation.Frame = new Frame(); //SplitViewFrame;
+            Navigation.Navigation.Frame.Navigated += SplitViewFrame_OnNavigated;
+            this.Loaded += (sender, args) => Navigation.Navigation.Navigate(new Home());
+        }
+
+        private void SplitViewFrame_OnNavigated(object sender, NavigationEventArgs e) {
+            HamburgerMenuControl.Content = e.Content;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e) {
@@ -26,10 +37,14 @@ namespace DailyTimeTracker {
             //     */
 
             //}));
+
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e) {
-
+        private void HamburgerMenuControl_OnItemClick(object sender, ItemClickEventArgs e) {
+            var menuItem = e.ClickedItem as MenuItem;
+            if(menuItem != null && menuItem.IsNavigation) {
+                Navigation.Navigation.Navigate(menuItem.NavigationDestination);
+            }
         }
     }
 }

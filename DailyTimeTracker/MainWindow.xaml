@@ -8,174 +8,53 @@
                       xmlns:listViewLayout="clr-namespace:Itenso.Windows.Controls.ListViewLayout;assembly=Itenso.Windows.Controls.ListViewLayout"
                       xmlns:wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
                       xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+                      xmlns:viewModel="clr-namespace:DailyTimeTracker.ViewModel"
                       mc:Ignorable="d"
                       Title="MainWindow"
                       WindowState="Maximized"
                       Background="{StaticResource GrayBrush10}"
                       Height="550"
                       Width="825"
-                      DataContext="{Binding Source={StaticResource Locator}, Path=Main}">
-    <Window.InputBindings>
-        <KeyBinding Modifiers="Control" Key="N" Command="{Binding AddActivityCommand}"></KeyBinding>
-        <KeyBinding Key="Delete" Command="{Binding DeleteActivityCommand}"
-                                                    CommandParameter="{Binding SelectedItem, ElementName=Activities}"></KeyBinding>
-    </Window.InputBindings>
+                      DataContext="{Binding Source={StaticResource Locator}, Path=Shell}">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <hamburgerMenu:HamburgerMenu MaxWidth="200"
-                                     Background="Transparent"
-                                     SelectionIndicatorColor="White"
-                                     MenuItemForeground="White"
-                                     HorizontalAlignment="Left">
-            <hamburgerMenu:HamburgerMenuItem Text="Home"
-                                             SelectionCommand="{Binding ElementName=this_}"
-                                             Icon="Resources/home-button-for-interface.png" />
-            <hamburgerMenu:HamburgerMenuItem Text="Reports"
-                                             Icon="Resources/pie-chart-statistics.png" />
-            <hamburgerMenu:HamburgerMenuItem Text="Settings"
-                                             Icon="Resources/settings-work-tool.png" />
-        </hamburgerMenu:HamburgerMenu>
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="2*"></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <Grid Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50"
-                                   MaxHeight="50"></RowDefinition>
-                    <RowDefinition></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid>
+
+        <Grid.Resources>
+
+            <DataTemplate x:Key="MenuItemTemplate"
+                          DataType="{x:Type viewModel:MenuItem}">
+                <Grid Height="48">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"></ColumnDefinition>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="48" />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <WrapPanel VerticalAlignment="Bottom">
-                        <Button Width="Auto"
-                                Height="24"
-                                Background="Green"
-                                Foreground="Black"
-                                Command="{Binding AddActivityCommand}">
-                            <StackPanel Orientation="Horizontal"
-                                        VerticalAlignment="Center">
-                                <Image Source="Resources/plus.png"></Image>
-                                <TextBlock>Add</TextBlock>
-                            </StackPanel>
-                        </Button>
-                    </WrapPanel>
-                    <StackPanel Grid.Column="1"
-                                Orientation="Horizontal">
-                        <Label VerticalContentAlignment="Center">Week's total hours of work</Label>
-                        <Label FontSize="34"
-                               FontWeight="Bold">48</Label>
-                    </StackPanel>
+                    <ContentControl Grid.Column="0"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Foreground="White"
+                                    Focusable="False"
+                                    Content="{Binding Icon}" />
+                    <TextBlock Grid.Column="1"
+                               VerticalAlignment="Center"
+                               FontSize="16"
+                               Foreground="White"
+                               Text="{Binding Text}" />
                 </Grid>
-                <ListView Grid.Row="1"
-                          Margin="2"
-                          Name="Activities"
-                          BorderThickness="1"
-                          BorderBrush="{StaticResource GrayBrush1}"
-                          IsSynchronizedWithCurrentItem="true"
-                          ItemsSource="{Binding Path=Activities}"
-                          Grid.RowSpan="1"
-                          HorizontalAlignment="Stretch"
-                          listViewLayout:ListViewLayoutManager.Enabled="true">
-                    <ListView.View>
-                        <GridView>
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=Day}"
-                                            Header="Day"
-                                            Width="Auto" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=StartTime}"
-                                            Header="Start"
-                                            Width="Auto" />
-                            <GridViewColumn DisplayMemberBinding="{Binding Path=EndTime}"
-                                            Header="End"
-                                            Width="Auto" />
-                            <GridViewColumn listViewLayout:RangeColumn.MinWidth="100"
-                                            listViewLayout:RangeColumn.MaxWidth="150"
-                                            DisplayMemberBinding="{Binding Path=Duration}"
-                                            Header="Duration"
-                                            Width="Auto" />
-                            <GridViewColumn  listViewLayout:RangeColumn.MinWidth="100"
-                                             listViewLayout:RangeColumn.MaxWidth="150"
-                                             DisplayMemberBinding="{Binding Path=Category.Category}"
-                                             Header="Category"
-                                             Width="Auto" />
-                            <GridViewColumn listViewLayout:ProportionalColumn.Width="12"
-                                            Header="Description"
-                                            Width="300">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <ScrollViewer VerticalScrollBarVisibility="Auto"
-                                                      MaxHeight="100">
-                                            <TextBlock Text="{Binding Path=Description}"
-                                                       TextWrapping="Wrap" />
-                                        </ScrollViewer>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                            <GridViewColumn listViewLayout:ProportionalColumn.Width="1">
-                                <GridViewColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button Content="Delete"
-                                                    Margin="3,3,3,3"
-                                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListView}}, Path=DataContext.DeleteActivityCommand}"
-                                                    CommandParameter="{Binding}"
-                                                    VerticalAlignment="Center" />
-                                            <Button Content="Edit"
-                                                    Margin="3,3,3,3"
-                                                    VerticalAlignment="Center" />
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </GridViewColumn.CellTemplate>
-                            </GridViewColumn>
-                        </GridView>
-                    </ListView.View>
-                </ListView>
-            </Grid>
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"></ColumnDefinition>
-                    <!--<ColumnDefinition></ColumnDefinition>-->
-                </Grid.ColumnDefinitions>
-                <wpf:CartesianChart Margin="2,2,2,2">
-                    <wpf:CartesianChart.Series>
-                        <wpf:LineSeries Values="{Binding Values}"
-                                        PointGeometrySize="18"
-                                        StrokeThickness="2" />
-                    </wpf:CartesianChart.Series>
-                    <wpf:CartesianChart.AxisX>
-                        <wpf:Axis LabelFormatter="{Binding DateTimeFormatter}"
-                                  DisableAnimations="True">
-                            <wpf:Axis.Separator>
-                                <wpf:Separator Step="{Binding AxisStep}"></wpf:Separator>
-                            </wpf:Axis.Separator>
-                        </wpf:Axis>
-                    </wpf:CartesianChart.AxisX>
-                    <wpf:CartesianChart.AxisY>
-                        <wpf:Axis MaxValue="{Binding AxisMax}"
-                                  MinValue="{Binding AxisMin}"
-                                  DisableAnimations="True">
-                            <wpf:Axis.Separator>
-                                <wpf:Separator Step="{Binding AxisStep}"></wpf:Separator>
-                            </wpf:Axis.Separator>
-                        </wpf:Axis>
-                    </wpf:CartesianChart.AxisY>
-                </wpf:CartesianChart>
-                <!--<StackPanel Grid.Column="1" Background="BlueViolet">
-                    <wpf:PieChart LegendLocation="Bottom" >
-                        <wpf:PieChart.Series>
-                            <wpf:PieSeries Title="Maria" DataLabels="True" PushOut="20" 
-                               LabelPoint="{Binding PointLabel}"/>
-                        </wpf:PieChart.Series>
-                    </wpf:PieChart>
-                </StackPanel>-->
-            </Grid>
-        </Grid>
+            </DataTemplate>
+
+        </Grid.Resources>
+
+        <controls:HamburgerMenu x:Name="HamburgerMenuControl"
+                                Foreground="White"
+                                PaneBackground="#FF444444"
+                                IsPaneOpen="False"
+                                ItemsSource="{Binding Menu}"
+                                OptionsItemsSource="{Binding OptionsMenu}"
+                                ItemClick="HamburgerMenuControl_OnItemClick"
+                                OptionsItemClick="HamburgerMenuControl_OnItemClick"
+                                ItemTemplate="{StaticResource MenuItemTemplate}"
+                                OptionsItemTemplate="{StaticResource MenuItemTemplate}"
+                                DisplayMode="CompactInline">
+        </controls:HamburgerMenu>
+
     </Grid>
 </controls:MetroWindow>
