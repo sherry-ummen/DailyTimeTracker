@@ -157,6 +157,7 @@ namespace DailyTimeTracker.ViewModel {
                         Description = "Some work!",
                         StartTime = DateTime.Now
                     };
+                activity.StartTime = DateTime.Now;
                 if (Activities.Count > 1) {
                     activity.Id = 0;
                     activity.EndTime = null;
