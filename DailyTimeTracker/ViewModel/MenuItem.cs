@@ -11,25 +11,27 @@ namespace DailyTimeTracker.ViewModel {
         private Uri _navigationDestination;
 
         public object Icon {
-            get => this._icon;
-            set => this.Set(ref this._icon, value);
+            get { return this._icon; }
+            set { this.Set(ref this._icon, value); }
         }
 
         public string Text {
-            get => this._text;
-            set => this.Set(ref this._text, value);
+            get { return this._text; }
+            set { this.Set(ref this._text, value); }
         }
 
         public ICommand Command {
-            get => this._command;
-            set => this.Set(ref this._command, (RelayCommand)value);
+            get { return this._command; }
+            set { this.Set(ref this._command, (RelayCommand) value); }
         }
 
         public Uri NavigationDestination {
-            get => this._navigationDestination;
-            set => this.Set(ref this._navigationDestination, value);
+            get { return this._navigationDestination; }
+            set { this.Set(ref this._navigationDestination, value); }
         }
 
-        public bool IsNavigation => this._navigationDestination != null;
+        public bool IsNavigation {
+            get { return this._navigationDestination != null; }
+        }
     }
 }

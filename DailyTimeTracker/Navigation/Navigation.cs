@@ -6,8 +6,8 @@ namespace DailyTimeTracker.Navigation {
         private static Frame _frame;
 
         public static Frame Frame {
-            get => _frame;
-            set => _frame = value;
+            get { return _frame; }
+            set { _frame = value; }
         }
 
         public static bool Navigate(Uri sourcePageUri) {
