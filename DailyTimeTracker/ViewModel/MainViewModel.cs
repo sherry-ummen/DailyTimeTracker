@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -14,6 +15,7 @@ using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Threading;
 using DailyTimeTracker.BusinessLogic;
+using LiveCharts.Helpers;
 
 namespace DailyTimeTracker.ViewModel {
     public class MainViewModel : ViewModelBase {
@@ -24,6 +26,8 @@ namespace DailyTimeTracker.ViewModel {
         private Activity _lastActivity;
 
         private ObservableCollection<Activity> _activities;
+        private List<Activity> _selectedItems = Enumerable.Empty<Activity>().ToList();
+
         public ObservableCollection<Activity> Activities {
             get { return _activities; }
             set { Set(() => Activities, ref _activities, value); }
@@ -56,6 +60,22 @@ namespace DailyTimeTracker.ViewModel {
         }
 
         public ICommand DeleteActivityCommand => new RelayCommand<Activity>((activity) => DeleteActivityCommandExecute(activity));
+
+        public ICommand MergeActivitiesCommand => new RelayCommand<object>((f) => {
+            var t = (System.Collections.IList)f;
+            var items = t.Cast<Activity>().ToArray();
+            if (items.Length <= 1) return;
+            if (!_dialogService.ShowConfirmation("Merge Activities", "Are you sure you would like to merge these activities?")) return;
+            var orderedItems = items.OrderByDescending(x => x.StartTime).ToArray();
+            var firstItem = orderedItems.First();
+            var lastItem = orderedItems.Last();
+            firstItem.StartTime = lastItem.StartTime;
+            firstItem.Description = lastItem.Description;
+            firstItem.Category = lastItem.Category;
+            items.Except(new [] { firstItem }).ForEach(x => Activities.Remove(x));
+            _databaseService.UpdateActivity(Result.Ok(firstItem));
+            //UpdateList();
+        });
 
         private void DeleteActivityCommandExecute(Activity activity) {
             if (_dialogService.ShowConfirmation("Deletion Confirmation", "Are you sure you want to delete?"))
