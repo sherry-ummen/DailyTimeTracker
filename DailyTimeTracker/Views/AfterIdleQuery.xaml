@@ -15,6 +15,11 @@
                       BorderBrush="AliceBlue"
                       ShowMaxRestoreButton="False"
                       WindowStartupLocation="CenterOwner">
+    <Window.InputBindings>
+        <KeyBinding Key="M"
+                    Command="{Binding MergeCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=Window}}"></KeyBinding>
+    </Window.InputBindings>
     <Window.Resources>
         <converter:BoolToVisibilityConverter x:Key="Converter" />
         <converter:InvertVisibilityConverter x:Key="InverseConverter"></converter:InvertVisibilityConverter>
@@ -22,7 +27,8 @@
     <Border BorderThickness="5"
             BorderBrush="Red">
         <StackPanel>
-            <Label FontWeight="Bold" FontSize="14">Welcome Back!</Label>
+            <Label FontWeight="Bold"
+                   FontSize="14">Welcome Back!</Label>
             <StackPanel Orientation="Horizontal">
                 <Label>What were you dong while you were away?</Label>
                 <Label FontWeight="Bold"
@@ -43,7 +49,7 @@
                          Name="NewTask"
                          IsChecked="{Binding IsNewTask}"
                          GroupName="ContinueActivity"></RadioButton>
-           
+
             <dailyTimeTracker:AddActivityControl DataContext="{Binding NewActivity}"
                                                  Visibility="{Binding ElementName=NewTask, Path=IsChecked, Converter={StaticResource Converter}}"></dailyTimeTracker:AddActivityControl>
             <StackPanel Orientation="Horizontal"

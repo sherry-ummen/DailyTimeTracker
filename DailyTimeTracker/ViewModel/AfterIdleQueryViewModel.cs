@@ -40,6 +40,13 @@ namespace DailyTimeTracker.ViewModel {
 
         public ICommand CancelCommand => new RelayCommand<IClosable>(CancelCommandExecute);
 
+        public ICommand MergeCommand => new RelayCommand<IClosable>(MergeCommandExecute);
+
+        private void MergeCommandExecute(IClosable obj) {
+            IsMerge = true;
+            OkCommandExecute(obj);
+        }
+
         public Result<AfterIdleQueryViewModel> ReturnResult { get; private set; } = Result.Fail<AfterIdleQueryViewModel>("Default result");
 
         private void CancelCommandExecute(IClosable closable) {
