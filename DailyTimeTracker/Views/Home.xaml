@@ -16,7 +16,7 @@
         <KeyBinding Modifiers="Control" Key="N" Command="{Binding AddActivityCommand}" />
         <KeyBinding Key="Delete" Command="{Binding DeleteActivityCommand}"
                     CommandParameter="{Binding SelectedItem, ElementName=Activities}" />
-        <KeyBinding Modifiers="Alt" Key="C" Command="{Binding MergeActivitiesCommand}"
+        <KeyBinding Key="M" Command="{Binding MergeActivitiesCommand}"
                     CommandParameter="{Binding SelectedItems, ElementName=Activities}" />
         
     </Page.InputBindings>
