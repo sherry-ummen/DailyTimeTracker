@@ -26,6 +26,7 @@ namespace DailyTimeTracker.ViewModel {
 
         public string TotalTimeElapsed => $"TimeElapsed: {_timeTaken:g}";
 
+        public bool IsMerge { get; set; } = false;
         public bool IsNewTask { get; set; } = false;
         public bool IsContinuation { get; set; } = true;
         public Activity DuringIdle { get; set; }

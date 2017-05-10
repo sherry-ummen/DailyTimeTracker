@@ -16,7 +16,8 @@
                       ShowMaxRestoreButton="False"
                       WindowStartupLocation="CenterOwner">
     <Window.Resources>
-        <converter:InvertVisibilityConverter x:Key="Converter" />
+        <converter:BoolToVisibilityConverter x:Key="Converter" />
+        <converter:InvertVisibilityConverter x:Key="InverseConverter"></converter:InvertVisibilityConverter>
     </Window.Resources>
     <Border BorderThickness="5"
             BorderBrush="Red">
@@ -28,16 +29,23 @@
                        FontSize="12"
                        Content="{Binding TotalTimeElapsed}"></Label>
             </StackPanel>
-            <dailyTimeTracker:AddActivityControl DataContext="{Binding IdleActivity}"></dailyTimeTracker:AddActivityControl>
-            <RadioButton Content="New Task"
-                         IsChecked="{Binding IsNewTask}"
-                         GroupName="ContinueActivity"></RadioButton>
+            <dailyTimeTracker:AddActivityControl DataContext="{Binding IdleActivity}"
+                                                 Visibility="{Binding ElementName=Merge, Path=IsChecked, Converter={StaticResource InverseConverter}}"></dailyTimeTracker:AddActivityControl>
+            <RadioButton IsChecked="{Binding IsMerge}"
+                         Content="Merge"
+                         GroupName="ContinueActivity"
+                         Name="Merge"></RadioButton>
             <RadioButton IsChecked="{Binding IsContinuation}"
                          Content="Continue with previous"
                          GroupName="ContinueActivity"
                          Name="Continue"></RadioButton>
+            <RadioButton Content="New Task"
+                         Name="NewTask"
+                         IsChecked="{Binding IsNewTask}"
+                         GroupName="ContinueActivity"></RadioButton>
+           
             <dailyTimeTracker:AddActivityControl DataContext="{Binding NewActivity}"
-                                                 Visibility="{Binding ElementName=Continue, Path=IsChecked, Converter={StaticResource Converter}}"></dailyTimeTracker:AddActivityControl>
+                                                 Visibility="{Binding ElementName=NewTask, Path=IsChecked, Converter={StaticResource Converter}}"></dailyTimeTracker:AddActivityControl>
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
                         Margin="0,5,0,10">

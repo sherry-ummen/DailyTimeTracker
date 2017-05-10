@@ -15,6 +15,7 @@ using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Threading;
 using DailyTimeTracker.BusinessLogic;
+using DailyTimeTracker.Utils;
 using LiveCharts.Helpers;
 
 namespace DailyTimeTracker.ViewModel {
@@ -61,20 +62,12 @@ namespace DailyTimeTracker.ViewModel {
 
         public ICommand DeleteActivityCommand => new RelayCommand<Activity>((activity) => DeleteActivityCommandExecute(activity));
 
-        public ICommand MergeActivitiesCommand => new RelayCommand<object>((f) => {
-            var t = (System.Collections.IList)f;
+        public ICommand MergeActivitiesCommand => new RelayCommand<object>((selectedItems) => {
+            var t = (System.Collections.IList)selectedItems;
             var items = t.Cast<Activity>().ToArray();
             if (items.Length <= 1) return;
             if (!_dialogService.ShowConfirmation("Merge Activities", "Are you sure you would like to merge these activities?")) return;
-            var orderedItems = items.OrderByDescending(x => x.StartTime).ToArray();
-            var firstItem = orderedItems.First();
-            var lastItem = orderedItems.Last();
-            firstItem.StartTime = lastItem.StartTime;
-            firstItem.Description = lastItem.Description;
-            firstItem.Category = lastItem.Category;
-            items.Except(new [] { firstItem }).ForEach(x => Activities.Remove(x));
-            _databaseService.UpdateActivity(Result.Ok(firstItem));
-            //UpdateList();
+            MergeActivities(items);
         });
 
         private void DeleteActivityCommandExecute(Activity activity) {
@@ -83,6 +76,17 @@ namespace DailyTimeTracker.ViewModel {
         }
 
         #endregion Commands
+
+        private void MergeActivities(IEnumerable<Activity> activities) {
+            var orderedItems = activities.OrderByDescending(x => x.StartTime).ToArray();
+            var firstItem = orderedItems.First();
+            var lastItem = orderedItems.Last();
+            firstItem.StartTime = lastItem.StartTime;
+            firstItem.Description = lastItem.Description;
+            firstItem.Category = lastItem.Category;
+            Utility.DispatchIt(() => activities.Except(new[] { firstItem }).ForEach(x => Activities.Remove(x)));
+            _databaseService.UpdateActivity(Result.Ok(firstItem));
+        }
 
         private void AddActivity(Result<Activity> activity) {
             if (activity.IsSuccess) {
@@ -112,7 +116,7 @@ namespace DailyTimeTracker.ViewModel {
         public MainViewModel(IDialogService dialogService, IDatabaseService databaseService, IIdleTimeNotifier idleTimeNotifier) {
             _dialogService = dialogService;
             _databaseService = databaseService;
-            idleTimeNotifier.StartNotifier(300); // Take this from configuration or settings
+            idleTimeNotifier.StartNotifier(30); // Take this from configuration or settings
             idleTimeNotifier.IdleTimeBegins += IdleTimeNotifierOnIdleTimeBegins;
             idleTimeNotifier.IdleTimeEnds += IdleTimeNotifierOnIdleTimeEnds;
             Activities = new ObservableCollection<Activity>();
@@ -145,9 +149,9 @@ namespace DailyTimeTracker.ViewModel {
             };
 
             //TODO: Get rid of direct call to dispatcher. Wrap it.
-            Application.Current.Dispatcher.Invoke(new Action(() => {
+            Utility.DispatchIt(() => {
                 AddActivity(Result.Ok(activity));
-            }));
+            });
         }
 
         private void IdleTimeNotifierOnIdleTimeEnds(TimeSpan timeTaken) {
@@ -163,7 +167,10 @@ namespace DailyTimeTracker.ViewModel {
             _lastActivity.Category = idleQuery.IdleActivity.Category;
             _lastActivity.Description = idleQuery.IdleActivity.Description;
             Activity activity = null;
-            if (idleQuery.IsNewTask) {
+            if (idleQuery.IsMerge) {
+                MergeTopTwoActivities();
+                return;
+            } else if (idleQuery.IsNewTask) {
                 activity = new Activity() {
                     Category = idleQuery.NewActivity.Category,
                     Description = idleQuery.NewActivity.Description,
@@ -186,6 +193,10 @@ namespace DailyTimeTracker.ViewModel {
             Application.Current.Dispatcher.Invoke(new Action(() => {
                 AddActivity(Result.Ok(activity));
             }));
+        }
+
+        private void MergeTopTwoActivities() {
+            MergeActivities(Activities.Take(2));
         }
 
         private void Activities_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e) {

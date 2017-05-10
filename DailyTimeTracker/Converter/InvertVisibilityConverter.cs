@@ -8,7 +8,7 @@ namespace DailyTimeTracker.Converter {
 
         public Object Convert(Object value, Type targetType, Object parameter, CultureInfo culture) {
             if (targetType == typeof(Visibility)) {
-                return (bool)value ?  Visibility.Collapsed : Visibility.Visible;
+                return (bool)value ? Visibility.Collapsed : Visibility.Visible;
             }
             throw new InvalidOperationException("Converter can only convert to value of type Visibility.");
         }
@@ -18,15 +18,15 @@ namespace DailyTimeTracker.Converter {
         }
     }
 
-    public class BoolToOppositeBoolConverter : IValueConverter {
+    public class BoolToVisibilityConverter : IValueConverter {
         #region IValueConverter Members
 
         public object Convert(object value, Type targetType, object parameter,
             System.Globalization.CultureInfo culture) {
-            if (targetType != typeof(bool))
-                throw new InvalidOperationException("The target must be a boolean");
-
-            return !(bool)value;
+            if (targetType == typeof(Visibility)) {
+                return (bool)value ? Visibility.Visible : Visibility.Collapsed;
+            }
+            throw new InvalidOperationException("Converter can only convert to value of type Visibility.");
         }
 
         public object ConvertBack(object value, Type targetType, object parameter,

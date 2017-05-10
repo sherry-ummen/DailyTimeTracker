@@ -167,6 +167,7 @@
     <Compile Include="Navigation\Navigation.cs" />
     <Compile Include="Services\DialogService.cs" />
     <Compile Include="Services\IDialogService.cs" />
+    <Compile Include="Utils\Utility.cs" />
     <Compile Include="ViewModel\AddActivityViewModel.cs" />
     <Compile Include="ViewModel\AfterIdleQueryViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
