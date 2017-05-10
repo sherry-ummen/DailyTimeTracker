@@ -104,7 +104,7 @@ namespace DailyTimeTracker.ViewModel {
         }
 
         private void UpdateList() {
-            var activities = _databaseService.GetActivities();
+            var activities = _databaseService.GetActivitiesForMonth(DateTime.Now.Month);
             Activities = new ObservableCollection<Activity>(activities.IsSuccess ? activities.Value.Reverse() : Enumerable.Empty<Activity>());
             Activities.CollectionChanged += Activities_CollectionChanged;
             _lastActivity = Activities.FirstOrDefault();

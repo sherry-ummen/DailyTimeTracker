@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CSharpFunctionalExtensions;
 using DailyTimeTracker.Models;
 using LiteDB;
@@ -33,6 +34,13 @@ namespace DailyTimeTracker.DatabaseLayer {
             Initialize();
             var collection = _database.GetCollection<Activity>("Activities");
             return Result.Ok<IEnumerable<Activity>>(collection.FindAll());
+        }
+
+        public Result<IEnumerable<Activity>> GetActivitiesForMonth(int month) {
+            if (month < 1 || month > 12) throw new Exception($"Given month {month} is wrong.");
+            Initialize();
+            var collection = _database.GetCollection<Activity>("Activities");
+            return Result.Ok<IEnumerable<Activity>>(collection.FindAll().Where(x => x.StartTime.Month == month));
         }
 
         public Result<IEnumerable<ActivityCategory>> GetCategories() {
