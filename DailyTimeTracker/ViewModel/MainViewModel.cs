@@ -116,7 +116,7 @@ namespace DailyTimeTracker.ViewModel {
         public MainViewModel(IDialogService dialogService, IDatabaseService databaseService, IIdleTimeNotifier idleTimeNotifier) {
             _dialogService = dialogService;
             _databaseService = databaseService;
-            idleTimeNotifier.StartNotifier(30); // Take this from configuration or settings
+            idleTimeNotifier.StartNotifier(300); // Take this from configuration or settings
             idleTimeNotifier.IdleTimeBegins += IdleTimeNotifierOnIdleTimeBegins;
             idleTimeNotifier.IdleTimeEnds += IdleTimeNotifierOnIdleTimeEnds;
             Activities = new ObservableCollection<Activity>();
